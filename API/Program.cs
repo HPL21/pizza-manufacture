@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.OpenApi.Models;
 using API.Data;
+using API.Interfaces.IRepostories;
+using API.Repositories;
+using API.Interfaces.IServices;
+using API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +29,9 @@ builder.Services.AddSwaggerGen(options =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+builder.Services.AddScoped<IPizzaService, PizzaService>();
 
 var app = builder.Build();
 
