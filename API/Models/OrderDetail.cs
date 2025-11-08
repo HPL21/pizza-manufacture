@@ -1,6 +1,9 @@
-﻿namespace API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models
 {
-    public class OrderDetails
+    [Table("OrderDetails")]
+    public class OrderDetail
     {
         public long PizzaId { get; set; }
         public virtual Pizza Pizza { get; set; } = null!;

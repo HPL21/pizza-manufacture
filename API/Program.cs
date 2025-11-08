@@ -1,9 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using System;
 using Microsoft.OpenApi.Models;
+using API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Swagger & OpenAPI
 builder.Services.AddEndpointsApiExplorer();

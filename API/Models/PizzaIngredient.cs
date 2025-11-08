@@ -2,6 +2,7 @@
 
 namespace API.Models
 {
+    [Table("PizzaIngredients")]
     public class PizzaIngredient
     {
         public long PizzaId { get; set; }

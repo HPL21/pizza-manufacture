@@ -9,6 +9,7 @@ namespace API.Models
         CARD
     }
 
+    [Table("Orders")]
     public class Order
     {
         [Key]
@@ -31,6 +32,6 @@ namespace API.Models
 
         public required PaymentMethod PaymentMethod { get; set; }
 
-        public virtual ICollection<Pizza> Pizzas { get; set; } = new List<Pizza>();
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
