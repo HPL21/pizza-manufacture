@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public long Id { get; set; }
-
-        [Required]
-        public string Name { get; set; } = null!;
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

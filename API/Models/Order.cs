@@ -15,7 +15,7 @@ namespace API.Models
         [Key]
         public long Id { get; set; }
 
-        public long UserId { get; set; }
+        public required String UserId { get; set; }
         public virtual User User { get; set; } = null!;
 
         public required DateTime  PlacedAt { get; set; }

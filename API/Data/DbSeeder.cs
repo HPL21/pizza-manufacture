@@ -9,14 +9,6 @@ namespace API.Data
         {
             if (!db.Users.Any())
             {
-                // Users
-                var users = new List<User>
-            {
-                new User { Name = "Alice" },
-                new User { Name = "Bob" }
-            };
-                db.Users.AddRange(users);
-                db.SaveChanges();
 
                 // Ingredients
                 var ingredients = new List<Ingredient>
@@ -52,7 +44,7 @@ namespace API.Data
             {
                 new Order
                 {
-                    UserId = users[0].Id,
+                    UserId = "1",
                     PlacedAt = DateTime.UtcNow,
                     CompletedAt = DateTime.UtcNow.AddHours(1),
                     TotalPrice = 15,
@@ -64,7 +56,7 @@ namespace API.Data
                 },
                 new Order
                 {
-                    UserId = users[1].Id,
+                    UserId = "1",
                     PlacedAt = DateTime.UtcNow,
                     CompletedAt = DateTime.UtcNow.AddHours(1),
                     TotalPrice = 18,
