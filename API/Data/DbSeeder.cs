@@ -9,6 +9,25 @@ namespace API.Data
         {
             if (!db.Users.Any())
             {
+                var users = new List<User>
+            {
+                new User
+                {
+                    Id = "1",
+                    UserName = "admin@example.com",
+                    Email = "admin@example.com",
+                    EmailConfirmed = true
+                },
+                new User
+                {
+                    Id = "2",
+                    UserName = "user@example.com",
+                    Email = "user@example.com",
+                    EmailConfirmed = true
+                }
+            };
+                db.Users.AddRange(users);
+                db.SaveChanges();
 
                 // Ingredients
                 var ingredients = new List<Ingredient>
