@@ -1,4 +1,5 @@
 ﻿using API.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,6 +16,13 @@ namespace API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllPizzasAsync()
+        {
+            var pizzas = await _pizzaService.GetAllPizzasAsync();
+            return Ok(pizzas);
+        }
+        [Authorize]
+        [HttpGet("Auth")]
+        public async Task<IActionResult> GetAllPizzasAsyncAuthorized()
         {
             var pizzas = await _pizzaService.GetAllPizzasAsync();
             return Ok(pizzas);

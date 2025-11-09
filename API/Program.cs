@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using API.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,29 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Description = "REST API",
     });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -73,6 +97,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
 builder.Services.AddScoped<IPizzaService, PizzaService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
