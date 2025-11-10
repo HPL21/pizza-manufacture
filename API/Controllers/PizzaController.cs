@@ -1,4 +1,5 @@
-﻿using API.Interfaces.IServices;
+﻿using API.Exceptions.Pizza;
+using API.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,15 +18,37 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPizzasAsync()
         {
-            var pizzas = await _pizzaService.GetAllPizzasAsync();
-            return Ok(pizzas);
+            try
+            {
+                var pizzas = await _pizzaService.GetAllPizzasAsync();
+                return Ok(pizzas);
+            }
+            catch (PizzaWasNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
         [Authorize]
         [HttpGet("Auth")]
         public async Task<IActionResult> GetAllPizzasAsyncAuthorized()
         {
-            var pizzas = await _pizzaService.GetAllPizzasAsync();
-            return Ok(pizzas);
-        }
+                try
+                {
+                    var pizzas = await _pizzaService.GetAllPizzasAsync();
+                    return Ok(pizzas);
+                }
+                catch (PizzaWasNotFoundException ex)
+                {
+                    return NotFound(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                }
+            }
     }
 }

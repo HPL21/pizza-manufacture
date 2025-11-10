@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Pizza;
+using API.Exceptions.Pizza;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
@@ -16,6 +17,10 @@ namespace API.Services
         public async Task<ICollection<PizzaDTO>> GetAllPizzasAsync()
         {
             var pizzas = await _pizzaRepository.GetAllPizzasAsync();
+            if (pizzas == null || !pizzas.Any())
+            {
+                throw new PizzaWasNotFoundException("No pizzas found.");
+            }
             return pizzas.Select(p => p.toDTO()).ToList();
         }
     }
