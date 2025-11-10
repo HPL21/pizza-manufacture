@@ -1,5 +1,7 @@
-﻿using API.Interfaces.IRepostories;
+﻿using API.DTOs.Pizza;
+using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
+using API.Mappers;
 using API.Models;
 
 namespace API.Services
@@ -11,9 +13,10 @@ namespace API.Services
         {
             _pizzaRepository = pizzaRepository;
         }
-        public async Task<ICollection<Pizza>> GetAllPizzasAsync()
+        public async Task<ICollection<PizzaDTO>> GetAllPizzasAsync()
         {
-            return await _pizzaRepository.GetAllPizzasAsync();
+            var pizzas = await _pizzaRepository.GetAllPizzasAsync();
+            return pizzas.Select(p => p.toDTO()).ToList();
         }
     }
 }

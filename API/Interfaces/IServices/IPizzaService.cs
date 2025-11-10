@@ -1,9 +1,10 @@
-﻿using API.Models;
+﻿using API.DTOs.Pizza;
+using API.Models;
 
 namespace API.Interfaces.IServices
 {
     public interface IPizzaService
     {
-        Task<ICollection<Pizza>> GetAllPizzasAsync();
+        Task<ICollection<PizzaDTO>> GetAllPizzasAsync();
     }
 }

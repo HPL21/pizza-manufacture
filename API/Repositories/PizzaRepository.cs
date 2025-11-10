@@ -14,7 +14,9 @@ namespace API.Repositories
         }
         public async Task<ICollection<Pizza>> GetAllPizzasAsync()
         {
-            return await _dbContext.Pizzas.ToListAsync();
+            return await _dbContext.Pizzas.Include(pizza => pizza.PizzaIngredients)
+                                         .ThenInclude(pi => pi.Ingredient)
+                                         .ToListAsync();
         }
 
     }
