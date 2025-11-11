@@ -8,8 +8,8 @@
                 <form @submit.prevent="handleLogin">
 
                     <div class="form-group mb-3">
-                        <label class="text-light">Email</label>
-                        <input type="email" v-model="email" class="form-control" required />
+                        <label class="text-light">Nazwa użytkownika</label>
+                        <input type="text" v-model="username" class="form-control" required />
                     </div>
 
                     <div class="form-group mb-4">
@@ -41,11 +41,16 @@ import { useRouter } from "vue-router";
 const auth = useAuthStore();
 const router = useRouter();
 
-const email = ref("");
+const username = ref("");
 const password = ref("");
 
-function handleLogin() {
-    auth.login();
-    router.push("/");
+async function handleLogin() {
+    try {
+        await auth.login(username.value, password.value);
+        router.push("/");
+    } catch (err: any) {
+        alert(err.message);
+    }
 }
+
 </script>

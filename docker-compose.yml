@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  gui:
+    build:
+      context: ./GUI
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./GUI:/app
+      - /app/node_modules
+
   db:
     image: postgres:16
     container_name: pg_pizza
@@ -22,12 +32,11 @@ services:
     depends_on:
       - db
     environment:
-      environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:5003
-      ConnectionStrings__Default: "Host=db;Port=5432;Database=pizza;Username=postgres;Password=postgres"
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=pizza-manufacture;Username=postgres;Password=root"
     ports:
-      - "5003:5003"     # host:container
+      - "5003:5003"
     restart: unless-stopped
 
 volumes:

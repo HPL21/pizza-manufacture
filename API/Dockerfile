@@ -10,4 +10,4 @@ RUN dotnet publish -c Release -o /publish
 FROM base AS final
 WORKDIR /app
 COPY --from=build /publish .
-ENTRYPOINT ["dotnet", "API.dll"]   # zamień na właściwy plik
+ENTRYPOINT ["dotnet", "API.dll"]
