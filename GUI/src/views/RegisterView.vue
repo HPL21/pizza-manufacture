@@ -6,10 +6,10 @@
                 <h1 class="text-center text-light mb-4">Rejestracja</h1>
 
                 <form @submit.prevent="handleRegister">
-
+                    
                     <div class="form-group mb-3">
-                        <label class="text-light">Imię i nazwisko</label>
-                        <input type="text" v-model="name" class="form-control" required />
+                        <label class="text-light">Nazwa użytkownika</label>
+                        <input type="text" v-model="username" class="form-control" required />
                     </div>
 
                     <div class="form-group mb-3">
@@ -52,18 +52,24 @@ import { useRouter } from "vue-router";
 const auth = useAuthStore();
 const router = useRouter();
 
-const name = ref("");
+const username = ref("");
 const email = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
 
-function handleRegister() {
+async function handleRegister() {
     if (password.value !== passwordConfirm.value) {
         alert("Hasła nie są takie same!");
         return;
     }
 
-    auth.login();
-    router.push("/");
+    try {
+        await auth.register(username.value, email.value, password.value);
+        alert("Rejestracja udana, możesz się zalogować");
+        router.push("/login");
+    } catch (err: any) {
+        alert(err.message);
+    }
 }
+
 </script>

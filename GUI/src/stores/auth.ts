@@ -1,28 +1,70 @@
 import { defineStore } from "pinia";
+import api from "../api";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLogged: false,
     isAdminUser: false,
-    username: ""
+    username: "",
+    token: ""
   }),
 
   actions: {
-    // TODO: IMPLEMENT
-    login() {
-      this.isLogged = true;
-      this.username = "Użytkownik";
-      this.isAdminUser = true;
+    async login(username: string, password: string) {
+      try {
+        const res = await api.post("/api/Account/login", {
+          username,
+          password
+        });
+
+        this.token = res.data.token;
+        this.username = res.data.username;
+        this.isAdminUser = res.data.isAdmin;
+        this.isLogged = true;
+
+        localStorage.setItem("auth_token", this.token);
+        localStorage.setItem("auth_user", this.username);
+        localStorage.setItem("auth_admin", String(this.isAdminUser));
+      } catch (err: any) {
+        throw new Error(err.response?.data || "Błąd logowania");
+      }
+    },
+
+    async register(username: string, email: string, password: string) {
+      try {
+        const res = await api.post("/api/Account/register", {
+          username,
+          email,
+          password
+        });
+
+        return res.data;
+      } catch (err: any) {
+        throw new Error(err.response?.data || "Błąd rejestracji");
+      }
     },
 
     logout() {
       this.isLogged = false;
       this.username = "";
       this.isAdminUser = false;
+      this.token = "";
+
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("auth_user");
+      localStorage.removeItem("auth_admin");
     },
 
-    setAdmin(value: boolean) {
-      this.isAdminUser = value;
+    loadFromStorage() {
+      const token = localStorage.getItem("auth_token");
+      const username = localStorage.getItem("auth_user");
+
+      if (token) {
+        this.token = token;
+        this.username = username || "";
+        this.isAdminUser = localStorage.getItem("auth_admin") === "true";
+        this.isLogged = true;
+      }
     }
   }
 });
