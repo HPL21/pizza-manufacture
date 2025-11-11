@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: pg_pizza
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: pizza-manufacture
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: api_pizza
+    depends_on:
+      - db
+    environment:
+      environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5003
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=pizza;Username=postgres;Password=postgres"
+    ports:
+      - "5003:5003"     # host:container
+    restart: unless-stopped
+
+volumes:
+  pgdata:
