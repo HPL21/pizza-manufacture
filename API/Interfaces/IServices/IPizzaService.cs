@@ -6,5 +6,6 @@ namespace API.Interfaces.IServices
     public interface IPizzaService
     {
         Task<ICollection<PizzaDTO>> GetAllPizzasAsync();
+        Task<PizzaDTO> GetPizzaByIdAsync(int id);
     }
 }

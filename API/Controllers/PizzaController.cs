@@ -23,7 +23,7 @@ namespace API.Controllers
                 var pizzas = await _pizzaService.GetAllPizzasAsync();
                 return Ok(pizzas);
             }
-            catch (PizzaWasNotFoundException ex)
+            catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -32,23 +32,22 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [Authorize]
-        [HttpGet("Auth")]
-        public async Task<IActionResult> GetAllPizzasAsyncAuthorized()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPizzaByIdAsync(int id)
         {
-                try
-                {
-                    var pizzas = await _pizzaService.GetAllPizzasAsync();
-                    return Ok(pizzas);
-                }
-                catch (PizzaWasNotFoundException ex)
-                {
-                    return NotFound(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Internal server error: {ex.Message}");
-                }
+            try
+            {
+                var pizza = await _pizzaService.GetPizzaByIdAsync(id);
+                return Ok(pizza);
             }
+            catch (PizzaNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
