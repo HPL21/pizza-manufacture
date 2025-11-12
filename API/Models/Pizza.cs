@@ -15,6 +15,8 @@ namespace API.Models
         public double Calories { get; set; }
         public double Price { get; set; }
 
+        public double IngredientAmount { get; set; }
+
         public virtual ICollection<PizzaIngredient> PizzaIngredients { get; set; } = new List<PizzaIngredient>();
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
