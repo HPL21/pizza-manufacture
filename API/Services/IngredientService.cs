@@ -18,7 +18,11 @@ namespace API.Services
         public async Task<ICollection<IngredientDTO>> GetAllIngredientsAsync()
         {
             var ingredients = await _ingredientRepository.GetAllIngredientsAsync();
-            return ingredients?.Select(i => i.toDTO()).ToList() ?? new List<IngredientDTO>();
+            if (ingredients == null || !ingredients.Any())
+            {
+                throw new IngredientNotFoundException("No ingredients found.");
+            }
+            return ingredients.Select(i => i.toDTO()).ToList();
         }
 
         public async Task<IngredientDTO> GetIngredientByIdAsync(int id)
