@@ -21,7 +21,7 @@ namespace API.Services
         }
         public async Task<LoggedInUserDTO> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDTO.Username.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDTO.Username);
             if (user == null) throw new AccountNotFoundException("Account with matching credentials was not found");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
