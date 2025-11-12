@@ -1,7 +1,6 @@
 ﻿using API.DTOs.Account;
 using API.Exceptions.Account;
 using API.Interfaces.IServices;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -49,7 +48,7 @@ namespace API.Controllers
                 var registeredUser = await _accountService.Register(registerDTO);
                 return Ok(registeredUser);
             }
-            catch (AccountWasNotCreatedException ex)
+            catch (AccountNotCreatedException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

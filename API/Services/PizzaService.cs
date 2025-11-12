@@ -19,7 +19,7 @@ namespace API.Services
             var pizzas = await _pizzaRepository.GetAllPizzasAsync();
             if (pizzas == null || !pizzas.Any())
             {
-                throw new PizzaWasNotFoundException("No pizzas found.");
+                throw new PizzaNotFoundException("No pizzas found.");
             }
             return pizzas.Select(p => p.toDTO()).ToList();
         }
@@ -29,7 +29,7 @@ namespace API.Services
             var pizza = await _pizzaRepository.GetPizzaByIdAsync(id);
             if (pizza == null)
             {
-                throw new PizzaWasNotFoundException($"Pizza with ID {id} was not found.");
+                throw new PizzaNotFoundException($"Pizza with ID {id} was not found.");
             }
             return pizza.toDTO();
         }

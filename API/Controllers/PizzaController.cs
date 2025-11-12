@@ -23,7 +23,7 @@ namespace API.Controllers
                 var pizzas = await _pizzaService.GetAllPizzasAsync();
                 return Ok(pizzas);
             }
-            catch (PizzaWasNotFoundException ex)
+            catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -40,7 +40,7 @@ namespace API.Controllers
                 var pizza = await _pizzaService.GetPizzaByIdAsync(id);
                 return Ok(pizza);
             }
-            catch (PizzaWasNotFoundException ex)
+            catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
