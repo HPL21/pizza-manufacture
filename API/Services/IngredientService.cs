@@ -3,6 +3,7 @@ using API.Exceptions.Ingredient;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
+using API.Models;
 
 namespace API.Services
 {
@@ -15,6 +16,11 @@ namespace API.Services
             _ingredientRepository = ingredientRepository;
         }
 
+        public async Task<Ingredient> CreateAsync(CreateIngredientRequestDTO createIngredientRequestDTO)
+        {
+            return await _ingredientRepository.CreateAsync(createIngredientRequestDTO.toModelFromCreateDTO());
+        }
+
         public async Task<ICollection<IngredientDTO>> GetAllIngredientsAsync()
         {
             var ingredients = await _ingredientRepository.GetAllIngredientsAsync();
@@ -25,7 +31,7 @@ namespace API.Services
             return ingredients.Select(i => i.toDTO()).ToList();
         }
 
-        public async Task<IngredientDTO> GetIngredientByIdAsync(int id)
+        public async Task<IngredientDTO> GetIngredientByIdAsync(long id)
         {
             var ingredient = await _ingredientRepository.GetIngredientByIdAsync(id);
             if (ingredient == null)

@@ -13,12 +13,19 @@ namespace API.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<Ingredient> CreateAsync(Ingredient ingredient)
+        {
+            await _dbContext.Ingredients.AddAsync(ingredient);
+            await _dbContext.SaveChangesAsync();
+            return ingredient;
+        }
+
         public async Task<ICollection<Ingredient>?> GetAllIngredientsAsync()
         {
             return await _dbContext.Ingredients.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Ingredient?> GetIngredientByIdAsync(int id)
+        public async Task<Ingredient?> GetIngredientByIdAsync(long id)
         {
             return await _dbContext.Ingredients.AsNoTracking()
                                     .FirstOrDefaultAsync(ingredient => ingredient.Id == id);

@@ -1,5 +1,7 @@
-﻿using API.Exceptions.Ingredient;
+﻿using API.DTOs.Ingredient;
+using API.Exceptions.Ingredient;
 using API.Interfaces.IServices;
+using API.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllIngredientsAsync()
+        public async Task<IActionResult> GetAllIngredients()
         {
             try
             {
@@ -31,8 +33,8 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetIngredientByIdAsync(int id)
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> GetIngredientById(long id)
         {
             try
             {
@@ -49,7 +51,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("name/{name}")]
-        public async Task<IActionResult> GetIngredientByNameAsync(string name)
+        public async Task<IActionResult> GetIngredientByName(string name)
         {
             try
             {
@@ -59,6 +61,23 @@ namespace API.Controllers
             catch (IngredientNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateIngredient([FromBody] CreateIngredientRequestDTO createIngredientRequestDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var createdIngredient = await _ingredientService.CreateAsync(createIngredientRequestDTO);
+                return CreatedAtAction(nameof(GetIngredientById), new { id = createdIngredient.Id }, createdIngredient.toDTO());
             }
             catch (Exception ex)
             {
