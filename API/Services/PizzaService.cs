@@ -23,5 +23,15 @@ namespace API.Services
             }
             return pizzas.Select(p => p.toDTO()).ToList();
         }
+
+        public async Task<PizzaDTO> GetPizzaByIdAsync(int id)
+        {
+            var pizza = await _pizzaRepository.GetPizzaByIdAsync(id);
+            if (pizza == null)
+            {
+                throw new PizzaWasNotFoundException($"Pizza with ID {id} was not found.");
+            }
+            return pizza.toDTO();
+        }
     }
 }

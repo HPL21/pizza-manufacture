@@ -12,12 +12,20 @@ namespace API.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<ICollection<Pizza>> GetAllPizzasAsync()
+        public async Task<ICollection<Pizza>?> GetAllPizzasAsync()
         {
-            return await _dbContext.Pizzas.Include(pizza => pizza.PizzaIngredients)
-                                         .ThenInclude(pi => pi.Ingredient)
-                                         .ToListAsync();
+            return await _dbContext.Pizzas.AsNoTracking()
+                                          .Include(pizza => pizza.PizzaIngredients)
+                                          .ThenInclude(pi => pi.Ingredient)
+                                          .ToListAsync();
         }
 
+        public async Task<Pizza?> GetPizzaByIdAsync(int id)
+        {
+            return await _dbContext.Pizzas.AsNoTracking()
+                                          .Include(pizza => pizza.PizzaIngredients)
+                                          .ThenInclude(pi => pi.Ingredient)
+                                          .FirstOrDefaultAsync(pizza => pizza.Id == id);
+        }
     }
 }
