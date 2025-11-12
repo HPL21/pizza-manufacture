@@ -16,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPizzasAsync()
+        public async Task<IActionResult> GetAllPizzas()
         {
             try
             {
@@ -33,7 +33,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPizzaByIdAsync(int id)
+        public async Task<IActionResult> GetPizzaById(int id)
         {
             try
             {
