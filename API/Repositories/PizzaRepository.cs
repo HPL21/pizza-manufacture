@@ -15,6 +15,7 @@ namespace API.Repositories
         public async Task<ICollection<Pizza>?> GetAllPizzasAsync()
         {
             return await _dbContext.Pizzas.AsNoTracking()
+                                          .Where(pizza => !pizza.isDeleted)
                                           .Include(pizza => pizza.PizzaIngredients)
                                           .ThenInclude(pi => pi.Ingredient)
                                           .ToListAsync();
