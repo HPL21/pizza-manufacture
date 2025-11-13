@@ -27,5 +27,11 @@ namespace API.Repositories
                                           .ThenInclude(pi => pi.Ingredient)
                                           .FirstOrDefaultAsync(pizza => pizza.Id == id);
         }
+        public async Task<Pizza> CreateAsync(Pizza pizza)
+        {
+            await _dbContext.Pizzas.AddAsync(pizza);
+            await _dbContext.SaveChangesAsync();
+            return pizza;
+        }
     }
 }

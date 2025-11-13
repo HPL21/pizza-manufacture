@@ -25,5 +25,21 @@ namespace API.Mappers
                 }).ToList()
             };
         }
+
+        public static Pizza toModelFromCreateDTO(this CreatePizzaRequestDTO createPizzaRequestDTO)
+        {
+            return new Pizza
+            {
+                Name = createPizzaRequestDTO.Name,
+                Weight = createPizzaRequestDTO.Weight,
+                Calories = createPizzaRequestDTO.Calories,
+                Price = createPizzaRequestDTO.Price,
+                PizzaIngredients = createPizzaRequestDTO.PizzaIngredients.Select(i => new PizzaIngredient
+                {
+                    IngredientId = i.IngredientId,
+                    IngredientAmount = i.IngredientAmount
+                }).ToList()
+            };
+        }
     }
 }

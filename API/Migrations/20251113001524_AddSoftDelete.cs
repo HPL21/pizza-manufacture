@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentity : Migration
+    public partial class AddSoftDelete : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,7 +62,8 @@ namespace API.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Price = table.Column<double>(type: "double precision", nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false),
-                    Calories = table.Column<double>(type: "double precision", nullable: false)
+                    Calories = table.Column<double>(type: "double precision", nullable: false),
+                    isDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +79,8 @@ namespace API.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false),
                     Calories = table.Column<double>(type: "double precision", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false)
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    isDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,7 +209,8 @@ namespace API.Migrations
                     RecipientAddress = table.Column<string>(type: "text", nullable: true),
                     RecipientPhone = table.Column<string>(type: "text", nullable: false),
                     RecipientEmail = table.Column<string>(type: "text", nullable: true),
-                    PaymentMethod = table.Column<int>(type: "integer", nullable: false)
+                    PaymentMethod = table.Column<int>(type: "integer", nullable: false),
+                    isDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,7 +253,8 @@ namespace API.Migrations
                 columns: table => new
                 {
                     PizzaId = table.Column<long>(type: "bigint", nullable: false),
-                    OrderId = table.Column<long>(type: "bigint", nullable: false)
+                    OrderId = table.Column<long>(type: "bigint", nullable: false),
+                    ItemAmount = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {

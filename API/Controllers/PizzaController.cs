@@ -1,4 +1,6 @@
-﻿using API.Exceptions.Pizza;
+﻿using API.DTOs.Pizza;
+using API.Exceptions.Ingredient;
+using API.Exceptions.Pizza;
 using API.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,7 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPizzaById(int id)
         {
@@ -43,6 +46,29 @@ namespace API.Controllers
             catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreatePizza([FromBody] CreatePizzaRequestDTO createPizzaRequestDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var createdPizza = await _pizzaService.CreateAsync(createPizzaRequestDTO);
+                return CreatedAtAction(nameof(GetPizzaById), new { id = createdPizza.Id }, createdPizza);
+            }
+            catch (IngredientNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

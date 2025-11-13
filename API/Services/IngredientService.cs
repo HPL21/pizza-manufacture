@@ -31,6 +31,11 @@ namespace API.Services
             return ingredients.Select(i => i.toDTO()).ToList();
         }
 
+        public Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids)
+        {
+            return _ingredientRepository.GetByIdsAsync(ids);
+        }
+
         public async Task<IngredientDTO> GetIngredientByIdAsync(long id)
         {
             var ingredient = await _ingredientRepository.GetIngredientByIdAsync(id);

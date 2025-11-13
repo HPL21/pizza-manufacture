@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Pizza;
+using API.Exceptions.Ingredient;
 using API.Exceptions.Pizza;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
@@ -10,9 +11,11 @@ namespace API.Services
     public class PizzaService : IPizzaService
     {
         private readonly IPizzaRepository _pizzaRepository;
-        public PizzaService(IPizzaRepository pizzaRepository)
+        private readonly IIngredientService _ingredientService;
+        public PizzaService(IPizzaRepository pizzaRepository, IIngredientService ingredientService)
         {
             _pizzaRepository = pizzaRepository;
+            _ingredientService = ingredientService;
         }
         public async Task<ICollection<PizzaDTO>> GetAllPizzasAsync()
         {
@@ -32,6 +35,16 @@ namespace API.Services
                 throw new PizzaNotFoundException($"Pizza with ID {id} was not found.");
             }
             return pizza.toDTO();
+        }
+
+        public async Task<Pizza> CreateAsync(CreatePizzaRequestDTO createPizzaRequestDTO)
+        {
+            var ingredients = await _ingredientService.GetByIdsAsync(createPizzaRequestDTO.PizzaIngredients.Select(i => i.IngredientId).ToList());
+            if (ingredients.Count != createPizzaRequestDTO.PizzaIngredients.Count)
+            {
+                throw new IngredientNotFoundException("One or more ingredients do not exist.");
+            }
+            return await _pizzaRepository.CreateAsync(createPizzaRequestDTO.toModelFromCreateDTO());
         }
     }
 }

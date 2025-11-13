@@ -36,5 +36,12 @@ namespace API.Repositories
             return await _dbContext.Ingredients.AsNoTracking()
                                     .FirstOrDefaultAsync(ingredient => ingredient.Name == name);
         }
+
+        public async Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids)
+        {
+            return await _dbContext.Ingredients
+                .Where(i => ids.Contains(i.Id))
+                .ToListAsync();
+        }
     }
 }

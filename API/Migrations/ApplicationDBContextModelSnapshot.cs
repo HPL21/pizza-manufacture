@@ -135,9 +135,6 @@ namespace API.Migrations
                     b.Property<double>("Calories")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("IngredientAmount")
-                        .HasColumnType("double precision");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -148,6 +145,9 @@ namespace API.Migrations
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

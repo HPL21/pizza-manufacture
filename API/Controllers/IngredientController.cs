@@ -2,6 +2,7 @@
 using API.Exceptions.Ingredient;
 using API.Interfaces.IServices;
 using API.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -67,6 +68,8 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateIngredient([FromBody] CreateIngredientRequestDTO createIngredientRequestDTO)
         {

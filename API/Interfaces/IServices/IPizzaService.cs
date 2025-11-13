@@ -7,5 +7,6 @@ namespace API.Interfaces.IServices
     {
         Task<ICollection<PizzaDTO>> GetAllPizzasAsync();
         Task<PizzaDTO> GetPizzaByIdAsync(int id);
+        Task<Pizza> CreateAsync(CreatePizzaRequestDTO createPizzaRequestDTO);
     }
 }
