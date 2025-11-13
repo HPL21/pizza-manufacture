@@ -87,5 +87,23 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> DeleteIngredient(long id)
+        {
+            try
+            {
+                var deletedIngredient = await _ingredientService.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (IngredientNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

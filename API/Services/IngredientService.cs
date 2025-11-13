@@ -21,6 +21,11 @@ namespace API.Services
             return await _ingredientRepository.CreateAsync(createIngredientRequestDTO.toModelFromCreateDTO());
         }
 
+        public async Task<Ingredient> DeleteAsync(long id)
+        {
+            return await _ingredientRepository.DeleteAsync(id);
+        }
+
         public async Task<ICollection<IngredientDTO>> GetAllIngredientsAsync()
         {
             var ingredients = await _ingredientRepository.GetAllIngredientsAsync();

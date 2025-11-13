@@ -10,5 +10,6 @@ namespace API.Interfaces.IServices
         Task<IngredientDTO> GetIngredientByNameAsync(string name);
         Task<Ingredient> CreateAsync(CreateIngredientRequestDTO createIngredientRequestDTO);
         Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids);
+        Task<Ingredient> DeleteAsync(long id);
     }
 }

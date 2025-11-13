@@ -9,5 +9,6 @@ namespace API.Interfaces.IRepostories
         Task<Ingredient?> GetIngredientByNameAsync(string name);
         Task<Ingredient> CreateAsync(Ingredient ingredient);
         Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids);
+        Task <Ingredient> DeleteAsync(long id);
     }
 }

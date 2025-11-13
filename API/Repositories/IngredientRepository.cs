@@ -47,5 +47,17 @@ namespace API.Repositories
                 .Where(i => ids.Contains(i.Id) && !i.isDeleted)
                 .ToListAsync();
         }
+
+        public async Task<Ingredient> DeleteAsync(long id)
+        {
+            var ingredient = await _dbContext.Ingredients.FirstOrDefaultAsync(i => i.Id == id && !i.isDeleted);
+            if (ingredient == null)
+            {
+                throw new Exception("Ingredient not found.");
+            }
+            ingredient.isDeleted = true;
+            await _dbContext.SaveChangesAsync();
+            return ingredient;
+        }
     }
 }
