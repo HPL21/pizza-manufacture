@@ -75,5 +75,24 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePizza(int id)
+        {
+            try
+            {
+                var deletedPizza = await _pizzaService.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (PizzaNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

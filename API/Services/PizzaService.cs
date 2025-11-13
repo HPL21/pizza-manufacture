@@ -27,7 +27,7 @@ namespace API.Services
             return pizzas.Select(p => p.toDTO()).ToList();
         }
 
-        public async Task<PizzaDTO> GetPizzaByIdAsync(int id)
+        public async Task<PizzaDTO> GetPizzaByIdAsync(long id)
         {
             var pizza = await _pizzaRepository.GetPizzaByIdAsync(id);
             if (pizza == null)
@@ -45,6 +45,11 @@ namespace API.Services
                 throw new IngredientNotFoundException("One or more ingredients do not exist.");
             }
             return await _pizzaRepository.CreateAsync(createPizzaRequestDTO.toModelFromCreateDTO());
+        }
+
+        public async Task<Pizza> DeleteAsync(long id)
+        {
+            return await _pizzaRepository.DeleteAsync(id);
         }
     }
 }
