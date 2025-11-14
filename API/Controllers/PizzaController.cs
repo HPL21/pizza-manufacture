@@ -54,6 +54,8 @@ namespace API.Controllers
             }
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreatePizza([FromBody] CreatePizzaRequestDTO createPizzaRequestDTO)
         {
@@ -76,6 +78,8 @@ namespace API.Controllers
             }
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePizza(int id)
         {
@@ -94,6 +98,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdatePizza([FromBody] UpdatePizzaRequestDTO updatePizzaRequestDTO, long id)
         {
