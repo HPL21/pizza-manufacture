@@ -29,6 +29,7 @@ namespace API.Repositories
         {
             return await _dbContext.Orders
                 .AsNoTracking()
+                .Where(o => !o.isDeleted)
                 .Include (o => o.User)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Pizza)
@@ -53,7 +54,7 @@ namespace API.Repositories
         {
             return await _dbContext.Orders
                 .AsNoTracking()
-                .Where(o => o.UserId == userId)
+                .Where(o => o.UserId == userId && !o.isDeleted)
                 .Include(o => o.User)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Pizza)

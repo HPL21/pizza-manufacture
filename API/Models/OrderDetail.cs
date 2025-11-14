@@ -10,5 +10,6 @@ namespace API.Models
 
         public long OrderId { get; set; }
         public virtual Order Order { get; set; } = null!;
+        public double ItemAmount { get; set; }
     }
 }

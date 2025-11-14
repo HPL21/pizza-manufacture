@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251109131118_AddIdentity")]
-    partial class AddIdentity
+    [Migration("20251113001524_AddSoftDelete")]
+    partial class AddSoftDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace API.Migrations
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -96,6 +99,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -110,6 +116,9 @@ namespace API.Migrations
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
+
+                    b.Property<double>("ItemAmount")
+                        .HasColumnType("double precision");
 
                     b.HasKey("PizzaId", "OrderId");
 
@@ -139,6 +148,9 @@ namespace API.Migrations
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

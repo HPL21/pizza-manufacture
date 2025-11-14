@@ -3,6 +3,7 @@ using API.Exceptions.Ingredient;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
+using API.Models;
 
 namespace API.Services
 {
@@ -15,6 +16,16 @@ namespace API.Services
             _ingredientRepository = ingredientRepository;
         }
 
+        public async Task<Ingredient> CreateAsync(CreateIngredientRequestDTO createIngredientRequestDTO)
+        {
+            return await _ingredientRepository.CreateAsync(createIngredientRequestDTO.toModelFromCreateDTO());
+        }
+
+        public async Task<Ingredient> DeleteAsync(long id)
+        {
+            return await _ingredientRepository.DeleteAsync(id);
+        }
+
         public async Task<ICollection<IngredientDTO>> GetAllIngredientsAsync()
         {
             var ingredients = await _ingredientRepository.GetAllIngredientsAsync();
@@ -25,7 +36,12 @@ namespace API.Services
             return ingredients.Select(i => i.toDTO()).ToList();
         }
 
-        public async Task<IngredientDTO> GetIngredientByIdAsync(int id)
+        public Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids)
+        {
+            return _ingredientRepository.GetByIdsAsync(ids);
+        }
+
+        public async Task<IngredientDTO> GetIngredientByIdAsync(long id)
         {
             var ingredient = await _ingredientRepository.GetIngredientByIdAsync(id);
             if (ingredient == null)
@@ -44,6 +60,16 @@ namespace API.Services
                 throw new IngredientNotFoundException($"Ingredient with name {name} was not found.");
             }
             return ingredient.toDTO();
+        }
+
+        public async Task<Ingredient> UpdateAsync(UpdateIngridientRequestDTO updateIngridientRequestDTO, long id)
+        {
+            if (await _ingredientRepository.DeleteAsync(id) == null)
+            {
+                throw new IngredientNotFoundException($"Ingredient with ID {id} was not found.");
+            }
+            var ingredient = await _ingredientRepository.CreateAsync(updateIngridientRequestDTO.toModelFromUpdateDTO());
+            return ingredient;
         }
     }
 }

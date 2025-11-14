@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrdersAsync()
+        public async Task<IActionResult> GetAllOrders()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderByIdAsync(int id)
+        public async Task<IActionResult> GetOrderById(int id)
         {
             try
             {

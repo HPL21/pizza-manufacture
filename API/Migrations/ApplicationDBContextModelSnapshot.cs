@@ -44,6 +44,9 @@ namespace API.Migrations
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.ToTable("Ingredients");
@@ -93,6 +96,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -107,6 +113,9 @@ namespace API.Migrations
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
+
+                    b.Property<double>("ItemAmount")
+                        .HasColumnType("double precision");
 
                     b.HasKey("PizzaId", "OrderId");
 
@@ -136,6 +145,9 @@ namespace API.Migrations
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

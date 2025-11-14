@@ -32,6 +32,8 @@ namespace API.Models
 
         public required PaymentMethod PaymentMethod { get; set; }
 
+        public bool isDeleted { get; set; } = false;
+
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
