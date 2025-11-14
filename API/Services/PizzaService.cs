@@ -1,10 +1,12 @@
-﻿using API.DTOs.Pizza;
+﻿using API.DTOs.Ingredient;
+using API.DTOs.Pizza;
 using API.Exceptions.Ingredient;
 using API.Exceptions.Pizza;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
 using API.Models;
+using API.Repositories;
 
 namespace API.Services
 {
@@ -50,6 +52,20 @@ namespace API.Services
         public async Task<Pizza> DeleteAsync(long id)
         {
             return await _pizzaRepository.DeleteAsync(id);
+        }
+
+        public async Task<Pizza> UpdateAsync(UpdatePizzaRequestDTO updatePizzaRequestDTO, long id)
+        {
+            if (await _pizzaRepository.DeleteAsync(id) == null)
+            {
+                throw new PizzaNotFoundException($"Pizza with ID {id} was not found.");
+            }
+            var ingredients = await _ingredientService.GetByIdsAsync(updatePizzaRequestDTO.PizzaIngredients.Select(i => i.IngredientId).ToList());
+            if (ingredients.Count != updatePizzaRequestDTO.PizzaIngredients.Count)
+            {
+                throw new IngredientNotFoundException("One or more ingredients do not exist.");
+            }
+            return await _pizzaRepository.CreateAsync(updatePizzaRequestDTO.toModelFromUpdateDTO());
         }
     }
 }

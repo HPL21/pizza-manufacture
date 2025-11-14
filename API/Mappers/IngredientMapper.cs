@@ -26,5 +26,15 @@ namespace API.Mappers
                 Calories = createIngredientRequestDTO.Calories
             };
         }
+        public static Ingredient toModelFromUpdateDTO(this UpdateIngridientRequestDTO updateIngredientRequestDTO)
+        {
+            return new Ingredient
+            {
+                Name = updateIngredientRequestDTO.Name,
+                Price = updateIngredientRequestDTO.Price,
+                Weight = updateIngredientRequestDTO.Weight,
+                Calories = updateIngredientRequestDTO.Calories
+            };
+        }
     }
 }

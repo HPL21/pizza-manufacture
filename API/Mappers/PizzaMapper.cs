@@ -41,5 +41,21 @@ namespace API.Mappers
                 }).ToList()
             };
         }
+
+        public static Pizza toModelFromUpdateDTO(this UpdatePizzaRequestDTO updatePizzaRequestDTO)
+        {
+            return new Pizza
+            {
+                Name = updatePizzaRequestDTO.Name,
+                Weight = updatePizzaRequestDTO.Weight,
+                Calories = updatePizzaRequestDTO.Calories,
+                Price = updatePizzaRequestDTO.Price,
+                PizzaIngredients = updatePizzaRequestDTO.PizzaIngredients.Select(i => new PizzaIngredient
+                {
+                    IngredientId = i.IngredientId,
+                    IngredientAmount = i.IngredientAmount
+                }).ToList()
+            };
+        }
     }
 }

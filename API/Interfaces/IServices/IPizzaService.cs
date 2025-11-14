@@ -9,5 +9,6 @@ namespace API.Interfaces.IServices
         Task<PizzaDTO> GetPizzaByIdAsync(long id);
         Task<Pizza> CreateAsync(CreatePizzaRequestDTO createPizzaRequestDTO);
         Task<Pizza> DeleteAsync(long id);
+        Task<Pizza> UpdateAsync(UpdatePizzaRequestDTO updatePizzaRequestDTO, long id);
     }
 }

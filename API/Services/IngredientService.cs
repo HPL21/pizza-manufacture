@@ -61,5 +61,15 @@ namespace API.Services
             }
             return ingredient.toDTO();
         }
+
+        public async Task<Ingredient> UpdateAsync(UpdateIngridientRequestDTO updateIngridientRequestDTO, long id)
+        {
+            if (await _ingredientRepository.DeleteAsync(id) == null)
+            {
+                throw new IngredientNotFoundException($"Ingredient with ID {id} was not found.");
+            }
+            var ingredient = await _ingredientRepository.CreateAsync(updateIngridientRequestDTO.toModelFromUpdateDTO());
+            return ingredient;
+        }
     }
 }
