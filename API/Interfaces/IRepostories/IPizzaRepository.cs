@@ -8,5 +8,6 @@ namespace API.Interfaces.IRepostories
         Task<Pizza?> GetPizzaByIdAsync(long id);
         Task<Pizza> CreateAsync(Pizza pizza);
         Task<Pizza> DeleteAsync(long id);
+        Task<ICollection<Pizza>> GetByIdsAsync(ICollection<long> ids);
     }
 }

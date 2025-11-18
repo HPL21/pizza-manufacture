@@ -8,5 +8,6 @@ namespace API.Interfaces.IRepostories
         Task<Order?> GetOrderByIdAndUserIdAsync(int id, string userId);
         Task<ICollection<Order>?> GetAllOrdersAsync();
         Task<ICollection<Order>?> GetAllOrdersByUserIdAsync(string userId);
+        Task<Order?> CreateAsync(Order order);
     }
 }

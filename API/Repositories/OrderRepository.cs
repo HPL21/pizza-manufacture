@@ -62,5 +62,20 @@ namespace API.Repositories
                 .ThenInclude(pi => pi.Ingredient)
                 .ToListAsync();
         }
+
+        public async Task<Order?> CreateAsync(Order order)
+        {
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+
+            return await _dbContext.Orders
+                .AsNoTracking()
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Pizza)
+                .ThenInclude(p => p.PizzaIngredients)
+                .ThenInclude(pi => pi.Ingredient)
+                .FirstOrDefaultAsync(o => o.Id == order.Id);
+        }
     }
 }

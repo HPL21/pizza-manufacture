@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using API.DTOs.Order;
 using API.Exceptions.Order;
+using API.Exceptions.Pizza;
 using API.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +64,26 @@ namespace API.Controllers
                 }         
             }
             catch (OrderNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequestDTO createOrderRequestDTO)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var order = await _orderService.CreateAsync(createOrderRequestDTO, userId!);
+                return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+               //return Ok(order);
+            }
+            catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

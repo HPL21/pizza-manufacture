@@ -10,6 +10,12 @@ namespace API.DTOs.Order
         [Range(0.01, double.MaxValue, ErrorMessage = "Total price must be greater than 0.")]
         public double? TotalPrice { get; set; }
 
+        [Range(0.01, double.MaxValue, ErrorMessage = "Total weight must be greater than 0.")]
+        public double? TotalWeight { get; set; }
+
+        [Range(0.01, double.MaxValue, ErrorMessage = "Total calories must be greater than 0.")]
+        public double? TotalCalories { get; set; }
+
         [Required(ErrorMessage = "Recipent name is required.")]
         [MaxLength(200, ErrorMessage = "Recipent name cannot be longer than 200 characters.")]
         public required string RecipientName { get; set; }

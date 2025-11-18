@@ -48,5 +48,12 @@ namespace API.Repositories
             await _dbContext.SaveChangesAsync();
             return pizza;
         }
+
+        public async Task<ICollection<Pizza>> GetByIdsAsync(ICollection<long> ids)
+        {
+            return await _dbContext.Pizzas
+                .Where(p => ids.Contains(p.Id) && !p.isDeleted)
+                .ToListAsync();
+        }
     }
 }
