@@ -1,4 +1,6 @@
-﻿namespace API.DTOs.Pizza
+﻿using API.DTOs.PizzaIngredient;
+
+namespace API.DTOs.Pizza
 {
     public class PizzaDTO
     {
