@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using API.DTOs.Order;
 using API.Exceptions.Order;
+using API.Exceptions.Pizza;
 using API.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+        public async Task<IActionResult> GetOrderById(long id)
         {
             try
             {
@@ -62,6 +64,48 @@ namespace API.Controllers
                 }         
             }
             catch (OrderNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequestDTO createOrderRequestDTO)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var order = await _orderService.CreateAsync(createOrderRequestDTO, userId!);
+                return Ok(new
+                {
+                    message = $"Order {order.Id} was created",
+                    orderId = order.Id
+                });
+            }
+            catch (PizzaNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("status/{id}")]
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeOrderStatusRequestDTO changeStatusRequestDTO, long id)
+        {
+            try
+            {
+                var order = await _orderService.ChangeStatusAsync(changeStatusRequestDTO, id);
+                return Ok($"Order {order.Id} status was changed to {changeStatusRequestDTO.Status}");
+            }
+            catch (PizzaNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

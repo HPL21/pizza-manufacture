@@ -71,7 +71,8 @@ namespace API.Data
                     TotalCalories = 500,
                     RecipientName = "Alice",
                     RecipientPhone = "123456789",
-                    PaymentMethod = PaymentMethod.CASH
+                    PaymentMethod = PaymentMethod.CASH,
+                    Status = OrderStatus.COMPLETED
                 },
                 new Order
                 {
@@ -83,7 +84,8 @@ namespace API.Data
                     TotalCalories = 600,
                     RecipientName = "Bob",
                     RecipientPhone = "987654321",
-                    PaymentMethod = PaymentMethod.CARD
+                    PaymentMethod = PaymentMethod.CARD,
+                    Status = OrderStatus.IN_PROGRESS
                 }
             };
                 db.Orders.AddRange(orders);

@@ -15,6 +15,7 @@ namespace API.DTOs.Order
         public required string RecipientPhone { get; set; }
         public string? RecipientEmail { get; set; }
         public required PaymentMethod PaymentMethod { get; set; }
+        public required OrderStatus Status { get; set; }
         public virtual ICollection<PizzaDTO> OrderItems { get; set; } = new List<PizzaDTO>();
     }
 }

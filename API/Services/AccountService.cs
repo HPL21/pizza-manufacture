@@ -29,11 +29,14 @@ namespace API.Services
             {
                 throw new AccountNotFoundException("Account with matching credentials was not found");
             }
+
+            var roles = await _userManager.GetRolesAsync(user);
             return
                 new LoggedInUserDTO
                 {
                     Username = user.UserName!,
                     Email = user.Email!,
+                    Role = roles.FirstOrDefault()!,
                     Token = _tokenService.CreateToken(user)
                 };
         }
@@ -60,6 +63,7 @@ namespace API.Services
                             {
                                 Username = appUser.UserName!,
                                 Email = appUser.Email!,
+                                Role = "User",
                                 Token = _tokenService.CreateToken(appUser)
                             };
                     }

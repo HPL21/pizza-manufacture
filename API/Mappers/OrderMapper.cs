@@ -20,7 +20,30 @@ namespace API.Mappers
                 RecipientPhone = order.RecipientPhone,
                 RecipientEmail = order.RecipientEmail,
                 PaymentMethod = order.PaymentMethod,
+                Status = order.Status,
                 OrderItems = order.OrderDetails.Select(od => od.Pizza.toDTO()).ToList()
+            };
+        }
+        public static Order toModelFromCreateDTO(this CreateOrderRequestDTO createOrderRequestDTO, string UserId)
+        {
+            return new Order
+            {
+                UserId = UserId,
+                PlacedAt = DateTime.UtcNow,
+                TotalPrice = createOrderRequestDTO.TotalPrice ?? 0,
+                TotalCalories = createOrderRequestDTO.TotalCalories ?? 0,
+                TotalWeight = createOrderRequestDTO.TotalWeight ?? 0,
+                RecipientName = createOrderRequestDTO.RecipientName,
+                RecipientAddress = createOrderRequestDTO.RecipientAddress,
+                RecipientPhone = createOrderRequestDTO.RecipientPhone,
+                RecipientEmail = createOrderRequestDTO.RecipientEmail,
+                PaymentMethod = createOrderRequestDTO.PaymentMethod,
+                Status = OrderStatus.PLACED,
+                OrderDetails = [.. createOrderRequestDTO.OrderItems.Select(oi => new OrderDetail
+                {
+                    PizzaId = oi.PizzaId,
+                    ItemAmount = oi.ItemAmount
+                })]
             };
         }
     }

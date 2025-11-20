@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Pizza;
+using API.DTOs.PizzaIngredient;
 using API.Models;
 
 namespace API.Mappers

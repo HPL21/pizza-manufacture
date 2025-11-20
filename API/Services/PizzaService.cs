@@ -67,5 +67,10 @@ namespace API.Services
             }
             return await _pizzaRepository.CreateAsync(updatePizzaRequestDTO.toModelFromUpdateDTO());
         }
+
+        public async Task<ICollection<Pizza>> GetByIdsAsync(ICollection<long> ids)
+        {
+            return await _pizzaRepository.GetByIdsAsync(ids);
+        }
     }
 }
