@@ -9,7 +9,10 @@ services:
       - "5173:5173"
     volumes:
       - ./GUI:/app
-      - /app/node_modules
+      - gui_node_modules:/app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: 200
 
   db:
     image: postgres:16
@@ -40,4 +43,5 @@ services:
     restart: unless-stopped
 
 volumes:
+  gui_node_modules:
   pgdata:

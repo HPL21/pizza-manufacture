@@ -19,9 +19,10 @@ tasks:
       - docker compose up -d api
   
   gui:restart:
-    desc: Restart GUI
+    desc: Rebuild image and restart GUI
     cmds:
-      - docker compose restart gui
+      - docker compose build --no-cache gui
+      - docker compose up -d gui
 
   default:
     cmds:
