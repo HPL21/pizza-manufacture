@@ -21,7 +21,22 @@ namespace API.Services
             _pizzaService = pizzaService;
         }
 
-        public async Task<OrderDTO> CreateAsync(CreateOrderRequestDTO createOrderRequestDTO, string UserId)
+        public async Task<Order> ChangeStatusAsync(ChangeOrderStatusRequestDTO changeStatusRequestDTO, long id)
+        {
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                throw new OrderNotFoundException($"Order with ID {id} was not found.");
+            }
+            order.Status = changeStatusRequestDTO.Status;
+            if (changeStatusRequestDTO.Status == OrderStatus.COMPLETED)
+            {
+                order.CompletedAt = DateTime.UtcNow;
+            }
+            return await _orderRepository.ChangeStatusAsync(order);
+        }
+
+        public async Task<Order> CreateAsync(CreateOrderRequestDTO createOrderRequestDTO, string UserId)
         {
             var pizzas = _pizzaService.GetByIdsAsync(createOrderRequestDTO.OrderItems.Select(p => p.PizzaId).ToList()).Result;
             if (pizzas.Count != createOrderRequestDTO.OrderItems.Count)
@@ -29,7 +44,7 @@ namespace API.Services
                 throw new PizzaNotFoundException("One or more pizzas was not found");
             }
             var order = await _orderRepository.CreateAsync(createOrderRequestDTO.toModelFromCreateDTO(UserId));
-            return order!.toDTO();
+            return order;
         }
 
         public async Task<ICollection<OrderDTO>> GetAllOrdersAsync()
@@ -52,7 +67,7 @@ namespace API.Services
             return orders.Select(o => o.toDTO()).ToList();
         }
 
-        public async Task<OrderDTO> GetOrderByIdAndUserIdAsync(int id, string userId)
+        public async Task<OrderDTO> GetOrderByIdAndUserIdAsync(long id, string userId)
         {
             var order = await _orderRepository.GetOrderByIdAndUserIdAsync(id, userId);
             if (order == null)
@@ -62,7 +77,7 @@ namespace API.Services
             return order.toDTO();
         }
 
-        public async Task<OrderDTO> GetOrderByIdAsync(int id)
+        public async Task<OrderDTO> GetOrderByIdAsync(long id)
         {
             var order = await _orderRepository.GetOrderByIdAsync(id);
             if (order == null)

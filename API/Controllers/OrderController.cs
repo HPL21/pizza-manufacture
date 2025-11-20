@@ -47,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+        public async Task<IActionResult> GetOrderById(long id)
         {
             try
             {
@@ -80,8 +80,30 @@ namespace API.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var order = await _orderService.CreateAsync(createOrderRequestDTO, userId!);
-                return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
-               //return Ok(order);
+                return Ok(new
+                {
+                    message = $"Order {order.Id} was created",
+                    orderId = order.Id
+                });
+            }
+            catch (PizzaNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("status/{id}")]
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeOrderStatusRequestDTO changeStatusRequestDTO, long id)
+        {
+            try
+            {
+                var order = await _orderService.ChangeStatusAsync(changeStatusRequestDTO, id);
+                return Ok($"Order {order.Id} status was changed to {changeStatusRequestDTO.Status}");
             }
             catch (PizzaNotFoundException ex)
             {
