@@ -28,7 +28,7 @@ body::-webkit-scrollbar-thumb
 
 .bg-simple {
     background-image: url("/images/background.png");
-    height: 100vh;
+    height: 200vh;
 }
 
 .bg-custom-dark {
@@ -98,4 +98,43 @@ body::-webkit-scrollbar-thumb
     padding-bottom: 10px;
     border-top: 1px solid #dee2e6;
     border-bottom: 1px solid #dee2e6;
+}
+
+/* radio buttons */
+input[type="radio"]{
+    -webkit-appearance: none;
+}
+label{
+   height: 120px;
+   width: 170px;
+   border: 3px solid #ffffff;
+   margin: auto;
+   border-radius: 10px;
+   position: relative;
+   color: #ffffff;
+   transition: 0.5s;
+}
+.bi {
+    font-size: 80px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%); 
+}
+label>span {
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, 80%);
+}
+input[type="radio"]:checked + label {
+	background-color: #ffffff;
+	color: #333;
+	box-shadow: 0 15px 45px rgba(184, 184, 184, 0.2);
+}
+input[type="radio"]:hover + label{
+	box-shadow: 0 15px 45px rgba(184, 184, 184, 0.2);
 }
