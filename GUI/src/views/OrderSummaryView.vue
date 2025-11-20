@@ -5,23 +5,43 @@
 
                 <h1 class="text-center text-light mb-4">Podsumowanie</h1>
                 <form role="form" action="" id="order-summary-form" method="post" enctype="multipart/form-data">
-                    <!-- foreach -->
-                    <div class="mb-4 order-item d-flex align-items-center">
-                        <div class="col-lg-8">
-                            <p class="text-light"><strong>Nazwa pizzy:</strong> asd</p>
-                            <p class="text-light"><strong>Cena:</strong> asd</p>
-                            <p class="text-light"><strong>Waga:</strong> asd</p>
-                            <p class="text-light"><strong>Kalorie:</strong> asd</p>
-                        </div>
-                        <div class="col-lg-4"><a href="" class="text-light"><img src="/images/delete2.png" alt="Usuń" class="icon"></a></div>
+                    <div
+                      v-for="pizza in cart"
+                      :key="pizza.id"
+                      class="mb-4 order-item d-flex align-items-center"
+                    >
+                      <div class="col-lg-8">
+                        <p class="text-light">
+                          <strong>Nazwa pizzy:</strong> {{ pizza.name }}
+                        </p>
+                        <p class="text-light">
+                          <strong>Ilość:</strong> {{ pizza.quantity }}
+                        </p>
+                        <p class="text-light">
+                          <strong>Cena:</strong> {{ pizza.price }} zł × {{ pizza.quantity }} = 
+                          {{ pizza.price * pizza.quantity }} zł
+                        </p>
+                        <p class="text-light">
+                          <strong>Waga:</strong> {{ pizza.weight * pizza.quantity }} g
+                        </p>
+                        <p class="text-light">
+                          <strong>Kalorie:</strong> {{ pizza.calories * pizza.quantity }} kcal
+                        </p>
+                      </div>
+                  
+                      <div class="col-lg-4">
+                        <button @click="removeItem(pizza.id)" class="text-light btn btn-sm btn-danger">
+                          <img src="/images/delete2.png" alt="Usuń" class="icon">
+                        </button>
+                      </div>
                     </div>
-                    <!-- endforeach -->
+
 
                     <div class="mb-4 border-bottom">
                         <p class="text-light fs-2"><strong>Zamówienie:</strong></p>
-                        <p class="text-light fs-4"><strong>Kwota zamówienia:</strong> asd zł</p>
-                        <p class="text-light fs-4"><strong>Waga:</strong> asd g</p>
-                        <p class="text-light fs-4"><strong>Kalorie:</strong> asd kcal</p>
+                        <p class="text-light fs-4"><strong>Kwota zamówienia:</strong> {{ totalPrice }} zł</p>
+                        <p class="text-light fs-4"><strong>Waga:</strong> {{ totalWeight }} g</p>
+                        <p class="text-light fs-4"><strong>Kalorie:</strong> {{ totalCalories }} kcal</p>
                     </div>
 
                     <div class="mb-4 border-bottom">
@@ -57,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 d-flex justify-content-between">
                         <RouterLink to="/order" class="btn btn-secondary">Powrót</RouterLink>
                         <input type="submit" class="btn btn-primary btn-custom" value="Złóż zamówienie">
                     </div>
@@ -66,3 +86,31 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted, computed } from "vue";
+
+const cart = ref([]);
+
+onMounted(() => {
+  const stored = localStorage.getItem("cart");
+  cart.value = stored ? JSON.parse(stored) : [];
+});
+
+const totalPrice = computed(() =>
+  cart.value.reduce((sum, p) => sum + p.price * p.quantity, 0)
+);
+
+const totalWeight = computed(() =>
+  cart.value.reduce((sum, p) => sum + p.weight * p.quantity, 0)
+);
+
+const totalCalories = computed(() =>
+  cart.value.reduce((sum, p) => sum + p.calories * p.quantity, 0)
+);
+
+function removeItem(id: number) {
+  cart.value = cart.value.filter(p => p.id !== id);
+  localStorage.setItem("cart", JSON.stringify(cart.value));
+}
+</script>
