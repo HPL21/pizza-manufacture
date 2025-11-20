@@ -14,7 +14,7 @@ namespace API.Controllers
         {
             _accountService = accountService;
         }
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             if (!ModelState.IsValid)
