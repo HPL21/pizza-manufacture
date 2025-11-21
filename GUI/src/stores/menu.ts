@@ -8,6 +8,12 @@ export const useMenuStore = defineStore("menu", {
     quantities: {} as Record<number, number>,
   }),
 
+  getters: {
+    isCartEmpty(): boolean {
+      return !this.menu.some(pizza => this.quantities[pizza.id]! > 0);
+    }
+  },
+
   actions: {
     async getMenu() {
       const res = await api.get<Pizza[]>("/api/Pizza");
