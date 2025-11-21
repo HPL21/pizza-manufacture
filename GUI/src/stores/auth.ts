@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", {
 
         this.token = res.data.token;
         this.username = res.data.username;
-        this.isAdminUser = res.data.isAdmin;
+        this.isAdminUser = res.data.role === 'Admin';
         this.isLogged = true;
 
         localStorage.setItem("auth_token", this.token);
