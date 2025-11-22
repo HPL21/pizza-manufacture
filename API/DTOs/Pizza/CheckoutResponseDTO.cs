@@ -5,6 +5,6 @@
         public double TotalCalories { get; set; }
         public double TotalWeight { get; set; }
         public double TotalPrice { get; set; }
-        public ICollection<PizzaDTO> pizzas { get; set; } = new List<PizzaDTO>();
+        public ICollection<PizzaOrderDTO> pizzas { get; set; } = new List<PizzaOrderDTO>();
     }
 }

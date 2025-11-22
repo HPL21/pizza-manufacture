@@ -15,13 +15,15 @@ namespace API.Mappers
                 PlacedAt = order.PlacedAt,
                 CompletedAt = order.CompletedAt,
                 TotalPrice = order.TotalPrice,
+                TotalCalories = order.TotalCalories,
+                TotalWeight = order.TotalWeight,
                 RecipientName = order.RecipientName,
                 RecipientAddress = order.RecipientAddress,
                 RecipientPhone = order.RecipientPhone,
                 RecipientEmail = order.RecipientEmail,
                 PaymentMethod = order.PaymentMethod,
                 Status = order.Status,
-                OrderItems = order.OrderDetails.Select(od => od.Pizza.toDTO()).ToList()
+                OrderItems = order.OrderDetails.Select(od => od.Pizza.toPizzaOrderDTO((int)od.ItemAmount)).ToList()
             };
         }
         public static Order toModelFromCreateDTO(this CreateOrderRequestDTO createOrderRequestDTO, string UserId, ICollection<Pizza> pizzas)

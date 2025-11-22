@@ -73,12 +73,21 @@ namespace API.Services
         public async Task<CheckoutResponseDTO> CheckoutAsync(CheckoutRequestDTO checkoutRequestDTO)
         {
             var pizzas = await GetByIdsAsync(checkoutRequestDTO.Pizzas.Select(p => p.PizzaId).ToList());
+
+            var pizzaOrders = checkoutRequestDTO.Pizzas
+                .Select(req =>
+                {
+                    var pizza = pizzas.First(p => p.Id == req.PizzaId);
+                    return pizza.toPizzaOrderDTO((int)req.ItemAmount);
+                })
+                .ToList();
+
             return new CheckoutResponseDTO
             {
-                TotalPrice = pizzas.Sum(p => p.Price),
-                TotalCalories = pizzas.Sum(p => p.Calories),
-                TotalWeight = pizzas.Sum(p => p.Weight),
-                pizzas = pizzas.Select(p => p.toDTO()).ToList()
+                TotalPrice = pizzaOrders.Sum(po => po.Price * po.Amount),
+                TotalCalories = pizzaOrders.Sum(po => po.Calories * po.Amount),
+                TotalWeight = pizzaOrders.Sum(po => po.Weight * po.Amount),
+                pizzas = pizzaOrders
             };
         }
     }
