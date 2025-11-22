@@ -1,6 +1,14 @@
 import { defineStore } from "pinia";
 import api from "../api";
 
+function parseJwt(token: string) {
+  try {
+    return JSON.parse(atob(token.split(".")[1]!));
+  } catch (e) {
+    return null;
+  }
+}
+
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLogged: false,
@@ -19,7 +27,7 @@ export const useAuthStore = defineStore("auth", {
 
         this.token = res.data.token;
         this.username = res.data.username;
-        this.isAdminUser = res.data.role === 'Admin';
+        this.isAdminUser = res.data.role === "Admin";
         this.isLogged = true;
 
         localStorage.setItem("auth_token", this.token);
@@ -59,12 +67,20 @@ export const useAuthStore = defineStore("auth", {
       const token = localStorage.getItem("auth_token");
       const username = localStorage.getItem("auth_user");
 
-      if (token) {
-        this.token = token;
-        this.username = username || "";
-        this.isAdminUser = localStorage.getItem("auth_admin") === "true";
-        this.isLogged = true;
+      if (!token) return;
+
+      const payload = parseJwt(token);
+      const now = Math.floor(Date.now() / 1000);
+
+      if (!payload || payload.exp < now) {
+        this.logout();
+        return;
       }
+
+      this.token = token;
+      this.username = username || "";
+      this.isAdminUser = localStorage.getItem("auth_admin") === "true";
+      this.isLogged = true;
     }
   }
 });
