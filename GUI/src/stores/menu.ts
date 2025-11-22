@@ -40,6 +40,12 @@ export const useMenuStore = defineStore("menu", {
           quantity: this.quantities[p.id],
         }));
       localStorage.setItem("cart", JSON.stringify(cart));
+    },
+    clearCart() {
+      Object.keys(this.quantities).forEach(id => {
+        this.quantities[Number(id)] = 0;
+      });
+      localStorage.removeItem("cart");
     }
-  }
+  },
 });

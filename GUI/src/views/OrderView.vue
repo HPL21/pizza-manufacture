@@ -73,10 +73,3 @@ function handleSummaryClick() {
   menu.saveToLocalStorage();
 }
 </script>
-<style scoped>
-.blocked {
-  opacity: 0.5;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-</style>

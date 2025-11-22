@@ -21,6 +21,7 @@ tasks:
   gui:restart:
     desc: Rebuild image and restart GUI
     cmds:
+      - docker compose rm -fsv gui
       - docker compose build --no-cache gui
       - docker compose up -d gui
 
