@@ -1,5 +1,10 @@
 export interface Ingredient {
+  ingredientId: number;
   ingredientName: string;
+  ingredientAmount: number;
+  price: number;
+  weight: number;
+  calories: number;
 }
 
 export interface Pizza {
@@ -16,6 +21,7 @@ export interface FullPizza {
   weight: number;
   calories: number;
   quantity: number;
+  ingredients: Ingredient[];
 }
 
 export interface CartItemStored {
