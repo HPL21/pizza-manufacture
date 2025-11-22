@@ -11,5 +11,6 @@ namespace API.Interfaces.IServices
         Task<Pizza> DeleteAsync(long id);
         Task<Pizza> UpdateAsync(UpdatePizzaRequestDTO updatePizzaRequestDTO, long id);
         Task<ICollection<Pizza>> GetByIdsAsync(ICollection<long> ids);
+        Task<CheckoutResponseDTO> CheckoutAsync(CheckoutRequestDTO checkoutRequestDTO);
     }
 }

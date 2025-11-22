@@ -4,6 +4,7 @@ using API.Exceptions.Pizza;
 using API.Interfaces.IServices;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -118,6 +119,29 @@ namespace API.Controllers
             catch (IngredientNotFoundException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [Authorize]
+        [HttpPost("Checkout")]
+        public async Task<IActionResult> Checkout([FromBody] CheckoutRequestDTO checkoutRequestDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var checkout = await _pizzaService.CheckoutAsync(checkoutRequestDTO);
+                return Ok(checkout);
+            }
+            catch (PizzaNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

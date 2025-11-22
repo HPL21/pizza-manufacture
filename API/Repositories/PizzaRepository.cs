@@ -53,6 +53,8 @@ namespace API.Repositories
         {
             return await _dbContext.Pizzas
                 .Where(p => ids.Contains(p.Id) && !p.isDeleted)
+                .Include(pizza => pizza.PizzaIngredients)
+                .ThenInclude(pi => pi.Ingredient)
                 .ToListAsync();
         }
     }

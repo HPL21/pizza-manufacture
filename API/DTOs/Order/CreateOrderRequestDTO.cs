@@ -24,8 +24,7 @@ namespace API.DTOs.Order
         public string? RecipientAddress { get; set; }
 
         [Required(ErrorMessage = "Recipent phone is required.")]
-        [RegularExpression(@"^(\+48)?\s?\d{3}[-\s]?\d{3}[-\s]?\d{3}$",
-    ErrorMessage = "Provide a valid phone number.")]
+        [RegularExpression(@"^(\+48)?\s?\d{3}[-\s]?\d{3}[-\s]?\d{3}$", ErrorMessage = "Provide a valid phone number.")]
         public required string RecipientPhone { get; set; }
 
         [EmailAddress(ErrorMessage = "Provide a valid email address.")]
