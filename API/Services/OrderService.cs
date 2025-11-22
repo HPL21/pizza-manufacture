@@ -38,12 +38,9 @@ namespace API.Services
 
         public async Task<Order> CreateAsync(CreateOrderRequestDTO createOrderRequestDTO, string UserId)
         {
-            var pizzas = _pizzaService.GetByIdsAsync(createOrderRequestDTO.OrderItems.Select(p => p.PizzaId).ToList()).Result;
-            if (pizzas.Count != createOrderRequestDTO.OrderItems.Count)
-            {
-                throw new PizzaNotFoundException("One or more pizzas was not found");
-            }
-            var order = await _orderRepository.CreateAsync(createOrderRequestDTO.toModelFromCreateDTO(UserId));
+            var pizzas = await _pizzaService.GetByIdsAsync(createOrderRequestDTO.OrderItems.Select(p => p.PizzaId).ToList());
+            var order = await _orderRepository.CreateAsync(createOrderRequestDTO.toModelFromCreateDTO(UserId, pizzas));
+
             return order;
         }
 

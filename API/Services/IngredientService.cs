@@ -1,5 +1,6 @@
 ﻿using API.DTOs.Ingredient;
 using API.Exceptions.Ingredient;
+using API.Exceptions.Pizza;
 using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
@@ -36,9 +37,15 @@ namespace API.Services
             return ingredients.Select(i => i.toDTO()).ToList();
         }
 
-        public Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids)
+        public async Task<ICollection<Ingredient>> GetByIdsAsync(ICollection<long> ids)
         {
-            return _ingredientRepository.GetByIdsAsync(ids);
+            var ingredients = await _ingredientRepository.GetByIdsAsync(ids);
+            var missingIngredients = ids.Except(ingredients.Select(p => p.Id)).ToList();
+            if (missingIngredients.Count > 0)
+            {
+                throw new PizzaNotFoundException($"Ingredients with ids: {string.Join(", ", missingIngredients)} were not found");
+            }
+            return ingredients;
         }
 
         public async Task<IngredientDTO> GetIngredientByIdAsync(long id)

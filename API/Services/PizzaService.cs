@@ -6,7 +6,6 @@ using API.Interfaces.IRepostories;
 using API.Interfaces.IServices;
 using API.Mappers;
 using API.Models;
-using API.Repositories;
 
 namespace API.Services
 {
@@ -42,10 +41,6 @@ namespace API.Services
         public async Task<Pizza> CreateAsync(CreatePizzaRequestDTO createPizzaRequestDTO)
         {
             var ingredients = await _ingredientService.GetByIdsAsync(createPizzaRequestDTO.PizzaIngredients.Select(i => i.IngredientId).ToList());
-            if (ingredients.Count != createPizzaRequestDTO.PizzaIngredients.Count)
-            {
-                throw new IngredientNotFoundException("One or more ingredients do not exist.");
-            }
             return await _pizzaRepository.CreateAsync(createPizzaRequestDTO.toModelFromCreateDTO());
         }
 
@@ -61,16 +56,39 @@ namespace API.Services
                 throw new PizzaNotFoundException($"Pizza with ID {id} was not found.");
             }
             var ingredients = await _ingredientService.GetByIdsAsync(updatePizzaRequestDTO.PizzaIngredients.Select(i => i.IngredientId).ToList());
-            if (ingredients.Count != updatePizzaRequestDTO.PizzaIngredients.Count)
-            {
-                throw new IngredientNotFoundException("One or more ingredients do not exist.");
-            }
             return await _pizzaRepository.CreateAsync(updatePizzaRequestDTO.toModelFromUpdateDTO());
         }
 
         public async Task<ICollection<Pizza>> GetByIdsAsync(ICollection<long> ids)
         {
-            return await _pizzaRepository.GetByIdsAsync(ids);
+            var pizzas = await _pizzaRepository.GetByIdsAsync(ids);
+            var missingPizzas = ids.Except(pizzas.Select(p => p.Id)).ToList();
+            if (missingPizzas.Count > 0)
+            {
+                throw new PizzaNotFoundException($"Pizza with ids: {string.Join(", ", missingPizzas)} were not found");
+            }
+            return pizzas;
+        }
+
+        public async Task<CheckoutResponseDTO> CheckoutAsync(CheckoutRequestDTO checkoutRequestDTO)
+        {
+            var pizzas = await GetByIdsAsync(checkoutRequestDTO.Pizzas.Select(p => p.PizzaId).ToList());
+
+            var pizzaOrders = checkoutRequestDTO.Pizzas
+                .Select(req =>
+                {
+                    var pizza = pizzas.First(p => p.Id == req.PizzaId);
+                    return pizza.toPizzaOrderDTO((int)req.ItemAmount);
+                })
+                .ToList();
+
+            return new CheckoutResponseDTO
+            {
+                TotalPrice = pizzaOrders.Sum(po => po.Price * po.Amount),
+                TotalCalories = pizzaOrders.Sum(po => po.Calories * po.Amount),
+                TotalWeight = pizzaOrders.Sum(po => po.Weight * po.Amount),
+                pizzas = pizzaOrders
+            };
         }
     }
 }
