@@ -39,7 +39,16 @@ namespace API.Services
         public async Task<Order> CreateAsync(CreateOrderRequestDTO createOrderRequestDTO, string UserId)
         {
             var pizzas = await _pizzaService.GetByIdsAsync(createOrderRequestDTO.OrderItems.Select(p => p.PizzaId).ToList());
-            var order = await _orderRepository.CreateAsync(createOrderRequestDTO.toModelFromCreateDTO(UserId, pizzas));
+
+            var pizzaOrders = createOrderRequestDTO.OrderItems
+                .Select(req =>
+                {
+                    var pizza = pizzas.First(p => p.Id == req.PizzaId);
+                    return pizza.toPizzaOrderDTO((int)req.ItemAmount);
+                })
+                .ToList();
+
+            var order = await _orderRepository.CreateAsync(createOrderRequestDTO.toModelFromCreateDTO(UserId, pizzaOrders));
 
             return order;
         }
