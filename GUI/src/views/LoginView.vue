@@ -36,9 +36,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useNotificationStore } from "../stores/notification";
 import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
+const notif = useNotificationStore();
 const router = useRouter();
 
 const username = ref("");
@@ -48,8 +50,9 @@ async function handleLogin() {
     try {
         await auth.login(username.value, password.value);
         router.push("/");
+        notif.show("Zalogowano pomyślnie!")
     } catch (err: any) {
-        alert(err.message);
+        notif.show(err.message);
     }
 }
 

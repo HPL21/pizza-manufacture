@@ -5,6 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV CHOKIDAR_USEPOLLING=true
+ENV CHOKIDAR_INTERVAL=200
 
 EXPOSE 5173
 CMD ["npm", "run", "dev", "--", "--host"]

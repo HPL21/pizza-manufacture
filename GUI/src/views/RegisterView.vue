@@ -47,9 +47,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useNotificationStore } from "../stores/notification";
 import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
+const notif = useNotificationStore();
 const router = useRouter();
 
 const username = ref("");
@@ -59,16 +61,16 @@ const passwordConfirm = ref("");
 
 async function handleRegister() {
     if (password.value !== passwordConfirm.value) {
-        alert("Hasła nie są takie same!");
+        notif.show("Hasła nie są takie same!");
         return;
     }
 
     try {
         await auth.register(username.value, email.value, password.value);
-        alert("Rejestracja udana, możesz się zalogować");
+        notif.show("Rejestracja udana, możesz się zalogować");
         router.push("/login");
     } catch (err: any) {
-        alert(err.message);
+        notif.show(err.message);
     }
 }
 
