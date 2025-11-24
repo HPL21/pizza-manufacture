@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace API.Data
@@ -9,24 +10,42 @@ namespace API.Data
         {
             if (!db.Users.Any())
             {
+                var hasher = new PasswordHasher<User>();
                 var users = new List<User>
-            {
-                new User
+                {
+                    new User
                 {
                     Id = "1",
-                    UserName = "admin@example.com",
+                    UserName = "Admin1",
+                    NormalizedUserName = "ADMIN1",
                     Email = "admin@example.com",
-                    EmailConfirmed = true
+                    NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                    EmailConfirmed = true,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    
                 },
-                new User
-                {
-                    Id = "2",
-                    UserName = "user@example.com",
-                    Email = "user@example.com",
-                    EmailConfirmed = true
-                }
-            };
+                    new User
+                    {
+                        Id = "2",
+                        UserName = "user@example.com",
+                        Email = "user@example.com",
+                        EmailConfirmed = true
+                    }
+                };
+                users[0].PasswordHash = hasher.HashPassword(users[0], "Admin123!");
                 db.Users.AddRange(users);
+                db.SaveChanges();
+
+                var userRoles = new List<IdentityUserRole<string>>
+                {
+                    new IdentityUserRole<string>
+                    {
+                        UserId = "1",
+                        RoleId = "1"
+                    }
+                };
+
+                db.UserRoles.AddRange(userRoles);
                 db.SaveChanges();
 
                 // Ingredients
@@ -75,7 +94,6 @@ namespace API.Data
                 db.SaveChanges();
 
                 // PizzaIngredients
-                // === PizzaIngredients ===
                 var map = new Dictionary<string, string[]>
                 {
                     ["Margherita"] = new[] { "Ciasto", "Sos pomidorowy", "Mozzarella", "Oliwa" },
@@ -102,12 +120,27 @@ namespace API.Data
                         {
                             PizzaId = pizza.Id,
                             IngredientId = ingredient.Id,
-                            IngredientAmount = ingredient.Weight // lub dowolna stała
+                            IngredientAmount = 1 
                         });
                     }
                 }
 
                 db.PizzaIngredients.AddRange(pizzaIngredients);
+                db.SaveChanges();
+
+                foreach (var pizza in pizzas)
+                {
+                    var assignedIngredients = pizzaIngredients
+                        .Where(pi => pi.PizzaId == pizza.Id)
+                        .Select(pi => ingredients.First(i => i.Id == pi.IngredientId))
+                        .ToList();
+
+                    pizza.Price = assignedIngredients.Sum(i => i.Price);
+                    pizza.Weight = assignedIngredients.Sum(i => i.Weight);
+                    pizza.Calories = assignedIngredients.Sum(i => i.Calories);
+                }
+
+                db.Pizzas.UpdateRange(pizzas);
                 db.SaveChanges();
 
                 // Orders
