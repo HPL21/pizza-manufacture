@@ -26,15 +26,15 @@ namespace API.Mappers
                 OrderItems = order.OrderDetails.Select(od => od.Pizza.toPizzaOrderDTO((int)od.ItemAmount)).ToList()
             };
         }
-        public static Order toModelFromCreateDTO(this CreateOrderRequestDTO createOrderRequestDTO, string UserId, ICollection<Pizza> pizzas)
+        public static Order toModelFromCreateDTO(this CreateOrderRequestDTO createOrderRequestDTO, string UserId, ICollection<PizzaOrderDTO> pizzas)
         {
             return new Order
             {
                 UserId = UserId,
                 PlacedAt = DateTime.UtcNow,
-                TotalPrice = pizzas.Sum(p => p.Price),
-                TotalCalories = pizzas.Sum(p => p.Calories),
-                TotalWeight = pizzas.Sum(p => p.Weight),
+                TotalPrice = pizzas.Sum(po => po.Price * po.Amount),
+                TotalCalories = pizzas.Sum(po => po.Calories * po.Amount),
+                TotalWeight = pizzas.Sum(po => po.Weight * po.Amount),
                 RecipientName = createOrderRequestDTO.RecipientName,
                 RecipientAddress = createOrderRequestDTO.RecipientAddress,
                 RecipientPhone = createOrderRequestDTO.RecipientPhone,
