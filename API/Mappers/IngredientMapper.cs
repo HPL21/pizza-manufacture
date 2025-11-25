@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Ingredient;
+using API.DTOs.PizzaIngredient;
 using API.Models;
 
 namespace API.Mappers
@@ -34,6 +35,19 @@ namespace API.Mappers
                 Price = updateIngredientRequestDTO.Price,
                 Weight = updateIngredientRequestDTO.Weight,
                 Calories = updateIngredientRequestDTO.Calories
+            };
+        }
+
+        public static PizzaIngredientDTO toPizzaIngredientDTO(this Ingredient ingredient, double ingredientAmount)
+        {
+            return new PizzaIngredientDTO
+            {
+                IngredientId = ingredient.Id,
+                IngredientName = ingredient.Name,
+                IngredientAmount = ingredientAmount,
+                Price = ingredient.Price,
+                Weight = ingredient.Weight,
+                Calories = ingredient.Calories
             };
         }
     }

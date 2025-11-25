@@ -27,13 +27,13 @@ namespace API.Mappers
             };
         }
 
-        public static Pizza toModelFromCreateDTO(this CreatePizzaRequestDTO createPizzaRequestDTO)
+        public static Pizza toModelFromCreateDTO(this CreatePizzaRequestDTO createPizzaRequestDTO,ICollection<PizzaIngredientDTO> pizzaIngredientDTO)
         {
             return new Pizza
             {
                 Name = createPizzaRequestDTO.Name,
-                Weight = createPizzaRequestDTO.Weight,
-                Calories = createPizzaRequestDTO.Calories,
+                Weight = pizzaIngredientDTO.Sum(pi => pi.Weight * pi.IngredientAmount),
+                Calories = pizzaIngredientDTO.Sum(pi => pi.Calories * pi.IngredientAmount),
                 Price = createPizzaRequestDTO.Price,
                 PizzaIngredients = createPizzaRequestDTO.PizzaIngredients.Select(i => new PizzaIngredient
                 {
