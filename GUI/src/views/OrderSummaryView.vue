@@ -18,7 +18,7 @@
                 <p class="text-light"><strong>Składniki:</strong></p>
                 <ul class="text-light">
                   <li v-for="ing in item.ingredients" :key="ing.ingredientId">
-                    {{ ing.ingredientName }}: {{ ing.ingredientAmount }} g
+                    {{ ing.ingredientName }}: {{ ing.weight }} g, {{ ing.calories }} kcal, {{ ing.ingredientAmount }} szt
                   </li>
                 </ul>
               </div>
