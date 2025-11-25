@@ -16,6 +16,7 @@ namespace API.Models
         public double Weight { get; set; }
         public double Calories { get; set; }
 
+        public bool isDeleted { get; set; } = false;
         public virtual ICollection<PizzaIngredient> PizzaIngredients { get; set; } = new List<PizzaIngredient>();
 
     }

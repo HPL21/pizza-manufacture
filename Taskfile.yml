@@ -1,0 +1,30 @@
+version: '3'
+
+tasks:
+
+  up:
+    desc: Start all services in detached mode
+    cmds:
+      - docker compose up -d
+
+  down:
+    desc: Stop containers, remove local images and volumes
+    cmds:
+      - docker compose down --rmi local --volumes
+
+  api:restart:
+    desc: Rebuild image and restart API
+    cmds:
+      - docker compose build --no-cache api
+      - docker compose up -d api
+  
+  gui:restart:
+    desc: Rebuild image and restart GUI
+    cmds:
+      - docker compose rm -fsv gui
+      - docker compose build --no-cache gui
+      - docker compose up -d gui
+
+  default:
+    cmds:
+      - task --list

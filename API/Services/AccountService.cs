@@ -21,7 +21,7 @@ namespace API.Services
         }
         public async Task<LoggedInUserDTO> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDTO.Username.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDTO.Username);
             if (user == null) throw new AccountNotFoundException("Account with matching credentials was not found");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
@@ -29,11 +29,14 @@ namespace API.Services
             {
                 throw new AccountNotFoundException("Account with matching credentials was not found");
             }
+
+            var roles = await _userManager.GetRolesAsync(user);
             return
                 new LoggedInUserDTO
                 {
                     Username = user.UserName!,
                     Email = user.Email!,
+                    Role = roles.FirstOrDefault()!,
                     Token = _tokenService.CreateToken(user)
                 };
         }
@@ -60,24 +63,25 @@ namespace API.Services
                             {
                                 Username = appUser.UserName!,
                                 Email = appUser.Email!,
+                                Role = "User",
                                 Token = _tokenService.CreateToken(appUser)
                             };
                     }
                     else
                     {
                         var errors = string.Join("; ", roleResult.Errors.Select(e => e.Description));
-                        throw new AccountWasNotCreatedException(errors);
+                        throw new AccountNotCreatedException(errors);
                     }
                 }
                 else
                 {
                     var errors = string.Join("; ", createdUser.Errors.Select(e => e.Description));
-                    throw new AccountWasNotCreatedException(errors);
+                    throw new AccountNotCreatedException(errors);
                 }
             }
             catch (Exception ex)
             {
-                throw new AccountWasNotCreatedException(ex.Message);
+                throw new AccountNotCreatedException(ex.Message);
             }
         }
     }

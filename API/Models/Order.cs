@@ -9,6 +9,15 @@ namespace API.Models
         CARD
     }
 
+    public enum OrderStatus
+    {
+        PLACED,
+        IN_PROGRESS,
+        IN_DELIVERY,
+        COMPLETED,
+        CANCELLED
+    }
+
     [Table("Orders")]
     public class Order
     {
@@ -31,6 +40,9 @@ namespace API.Models
         public string? RecipientEmail { get; set; }
 
         public required PaymentMethod PaymentMethod { get; set; }
+        public required OrderStatus Status { get; set; } = OrderStatus.PLACED;
+
+        public bool isDeleted { get; set; } = false;
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
