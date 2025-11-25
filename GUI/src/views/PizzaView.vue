@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-simple">
-        <div class="container max-w-90 min-vh-100">
-            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3">
+    <div class="bg-pizza">
+        <div class="container max-w-90 min-vh-100 d-flex flex-column">
+            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3 mt-2">
                 Manufaktura pizzy - pizze
             </h1>
 
@@ -22,14 +22,14 @@
                     {{ editMode ? 'Edytuj pizzę' : 'Nowa pizza' }}
                 </h2>
 
-                <div class="flex flex-col gap-3">
+                <div class="d-flex flex-column gap-3">
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Nazwa</label>
                         <input v-model="form.name" class="border p-2 rounded" />
                     </div>
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Cena [zł]</label>
                         <input v-model.number="form.price" type="number" class="border p-2 rounded" />
                     </div>
@@ -37,9 +37,9 @@
                     <div>
                         <label class="font-semibold mb-1 d-block">Składniki</label>
 
-                        <div v-for="(item, idx) in form.pizzaIngredients" :key="idx" class="flex gap-2 mb-2">
+                        <div v-for="(item, idx) in form.pizzaIngredients" :key="idx" class="d-flex gap-2 mb-2">
 
-                            <select v-model="item.ingredientId" class="border p-2 rounded flex-grow">
+                            <select v-model="item.ingredientId" class="border p-2 rounded">
                                 <option disabled value="">-- wybierz składnik --</option>
                                 <!-- @vue-ignore -->
                                 <option v-for="ing in ingredients" :key="ing.id" :value="ing.id">
@@ -250,6 +250,6 @@ async function deletePizza(id: number) {
 }
 
 .modal-box {
-    width: 500px;
+    width: 600px;
 }
 </style>

@@ -74,7 +74,6 @@ export const useMenuStore = defineStore("menu", {
       name: string;
       address: string;
       phone: string;
-      email: string;
       payment: string;
     }) {
       if (this.lastCheckout.pizzas.length === 0) throw new Error("Koszyk jest pusty");
@@ -88,7 +87,6 @@ export const useMenuStore = defineStore("menu", {
         recipientName: form.name,
         recipientAddress: form.address,
         recipientPhone: form.phone,
-        recipientEmail: form.email,
         paymentMethod: form.payment === "cash" ? 0 : 1,
         orderItems
       };
