@@ -41,7 +41,15 @@ namespace API.Services
         public async Task<Pizza> CreateAsync(CreatePizzaRequestDTO createPizzaRequestDTO)
         {
             var ingredients = await _ingredientService.GetByIdsAsync(createPizzaRequestDTO.PizzaIngredients.Select(i => i.IngredientId).ToList());
-            return await _pizzaRepository.CreateAsync(createPizzaRequestDTO.toModelFromCreateDTO());
+            var pizzaIngredients = createPizzaRequestDTO.PizzaIngredients
+                .Select(req =>
+                {
+                    var ingredient = ingredients.First(pi => pi.Id == req.IngredientId);
+                    return ingredient.toPizzaIngredientDTO((int)req.IngredientAmount);
+                })
+                .ToList();
+
+            return await _pizzaRepository.CreateAsync(createPizzaRequestDTO.toModelFromCreateDTO(pizzaIngredients));
         }
 
         public async Task<Pizza> DeleteAsync(long id)
