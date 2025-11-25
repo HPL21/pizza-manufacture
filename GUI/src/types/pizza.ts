@@ -1,4 +1,4 @@
-export interface Ingredient {
+export interface PizzaIngredient {
   ingredientId: number;
   ingredientName: string;
   ingredientAmount: number;
@@ -11,7 +11,7 @@ export interface Pizza {
   id: number;
   name: string;
   price: number;
-  ingredients: Ingredient[];
+  ingredients: PizzaIngredient[];
 }
 
 export interface FullPizza {
@@ -21,7 +21,7 @@ export interface FullPizza {
   weight: number;
   calories: number;
   quantity: number;
-  ingredients: Ingredient[];
+  ingredients: PizzaIngredient[];
 }
 
 export interface CartItemStored {

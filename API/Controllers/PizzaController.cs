@@ -100,8 +100,8 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut]
-        public async Task<IActionResult> UpdatePizza([FromBody] UpdatePizzaRequestDTO updatePizzaRequestDTO, long id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePizza([FromBody] UpdatePizzaRequestDTO updatePizzaRequestDTO, [FromQuery] long id)
         {
             try
             {

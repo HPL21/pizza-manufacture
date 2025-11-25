@@ -145,3 +145,6 @@ input[type="radio"]:hover + label{
   pointer-events: none;
   cursor: not-allowed;
 }
+.max-w-90 {
+    max-width: 90% !important;
+}
