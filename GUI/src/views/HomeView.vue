@@ -19,7 +19,7 @@
                     </div>
 
                     <div v-if="auth.isLogged" class="mt-5 text-center">
-                        <RouterLink to="/order" class="btn btn-danger btn-lg">
+                        <RouterLink to="/order" class="btn btn-lg blue-background">
                             Rozpocznij
                         </RouterLink>
                     </div>

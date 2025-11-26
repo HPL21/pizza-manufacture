@@ -2,7 +2,7 @@
 
 .bg-pizza {
     background-image: url(https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-    height: 100vh;
+    min-height: 100vh;
 }
 
 button[type="submit"]
@@ -99,7 +99,6 @@ body::-webkit-scrollbar-thumb
     padding-top: 10px;
     padding-bottom: 10px;
     border-top: 1px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
 }
 
 
@@ -115,13 +114,14 @@ input[type="radio"]{
    position: relative;
    color: #ffffff;
    transition: 0.5s;
+   cursor: pointer;
 }
-.bi {
+.bi-custom {
     font-size: 40px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -80%); 
+    transform: translate(-50%, -80%);
 }
 label>span {
     font-size: 20px;
@@ -147,4 +147,23 @@ input[type="radio"]:hover + label{
 }
 .max-w-90 {
     max-width: 90% !important;
+}
+.w-90 {
+    width: 90% !important;
+}
+.bi-gger {
+    font-size: 3vh !important;
+}
+nav.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+.blue-background {
+    color: #ffffff;
+    background-color: #008ff5 !important;
+    border-color: #008ff5 !important;
+}
+.border-right {
+    border-right: 1px solid #dee2e6;
 }

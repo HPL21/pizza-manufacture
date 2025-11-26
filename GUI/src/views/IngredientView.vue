@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-simple">
-        <div class="container max-w-90 min-vh-100">
-            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3">
+    <div class="bg-pizza">
+        <div class="container max-w-90 min-vh-100 d-flex flex-column">
+            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3 mt-2">
                 Manufaktura pizzy - składniki
             </h1>
 
@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <div class="table-responsive dynamic-shadow rounded-3 bg-light p-2">
+            <div class="table-responsive dynamic-shadow rounded-3 bg-light p-2 mb-4">
                 <table ref="tableRef" class="display table table-striped" style="width:100%;"></table>
             </div>
         </div>
@@ -20,26 +20,26 @@
             <div class="modal-box bg-light p-4 rounded dynamic-shadow">
                 <h2 class="text-xl font-bold mb-3">{{ editMode ? "Edytuj składnik" : "Nowy składnik" }}</h2>
 
-                <div class="flex flex-col gap-3">
+                <div class="d-flex flex-column gap-3">
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Nazwa</label>
                         <input v-model="form.name" class="border p-2 rounded" placeholder="Wpisz nazwę" />
                     </div>
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Cena [zł]</label>
                         <input v-model.number="form.price" type="number" class="border p-2 rounded"
                             placeholder="Cena" />
                     </div>
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Waga [g]</label>
                         <input v-model.number="form.weight" type="number" class="border p-2 rounded"
                             placeholder="Waga" />
                     </div>
 
-                    <div class="flex flex-col">
+                    <div class="d-flex flex-column justify-content-center">
                         <label class="font-semibold mb-1 d-block">Kalorie [kcal]</label>
                         <input v-model.number="form.calories" type="number" class="border p-2 rounded"
                             placeholder="Kalorie" />
@@ -47,8 +47,7 @@
 
                 </div>
 
-
-                <div class="flex justify-end gap-2 mt-4">
+                <div class="d-flex justify-content-end gap-2 mt-4">
                     <button class="px-3 py-1 bg-gray-400 rounded" @click="closeModal">Anuluj</button>
                     <button class="px-3 py-1 bg-custom-dark text-light rounded" @click="saveIngredient">
                         Zapisz

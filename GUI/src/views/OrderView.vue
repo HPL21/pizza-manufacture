@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-simple">
-    <div class="container-sm min-vh-100 d-flex justify-content-center align-items-center">
-      <div class="col-lg-6 bg-dark p-5 rounded dynamic-shadow bottom-slide">
+  <div class="bg-pizza">
+    <div class="container-sm d-flex justify-content-center">
+      <div class="bg-dark p-5 rounded dynamic-shadow bottom-slide mt-5">
 
         <h1 class="text-center text-light mb-4">Złóż zamówienie</h1>
 
@@ -39,7 +39,7 @@
         </table>
 
         <div class="mt-5 text-center" @click.prevent="handleSummaryClick">
-          <RouterLink to="/order-summary" class="btn btn-danger btn-lg" :class="{ blocked: isCartEmpty }">
+          <RouterLink to="/order-summary" class="btn btn-lg blue-background" :class="{ blocked: isCartEmpty }">
             Podsumowanie
           </RouterLink>
         </div>

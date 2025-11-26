@@ -1,16 +1,16 @@
 <template>
-    <div class="bg-simple">
-        <div class="container max-w-90 min-vh-100">
-            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3">
+    <div class="bg-pizza">
+        <div class="container max-w-90 min-vh-100 d-flex flex-column">
+            <h1 class="font-semibold text-light text-3xl mb-4 bg-custom-dark p-4 dynamic-shadow rounded-3 mt-2">
                 Manufaktura pizzy - zamówienia
             </h1>
 
             <div class="flex justify-end mb-4 gap-3">
                 <button class="px-4 py-2 mx-1 rounded bg-light text-dark dynamic-shadow" @click="goToIngredients">
-                    ➕ Dodaj składniki
+                    🍅 Zarządzaj składnikami
                 </button>
                 <button class="px-4 py-2 mx-1 rounded bg-light text-dark dynamic-shadow" @click="goToPizza">
-                    🍕 Dodaj pizzę
+                    🍕 Zarządzaj pizzami
                 </button>
             </div>
 
