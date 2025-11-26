@@ -167,3 +167,11 @@ nav.navbar {
 .border-right {
     border-right: 1px solid #dee2e6;
 }
+.navbar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+}

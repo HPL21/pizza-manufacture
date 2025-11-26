@@ -8,7 +8,7 @@
         </RouterLink>
 
       </div>
-      <div class="text-white fw-bold fs-5 text-center flex-grow-1">
+      <div class="navbar-title">
         {{ pageTitle }}
       </div>
       <div class="d-flex align-items-center gap-3">
