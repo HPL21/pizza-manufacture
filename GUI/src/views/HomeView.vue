@@ -20,14 +20,14 @@
 
                     <div v-if="auth.isLogged" class="mt-5 text-center">
                         <RouterLink to="/order" class="btn btn-lg blue-background">
-                            Rozpocznij
+                            Złóż zamówienie
                         </RouterLink>
                     </div>
 
                     <div v-else class="mt-5 text-center">
-                        <h1 class="font-weight-bold text-light" style="font-size: 3em; margin-bottom: 1em;">
-                            Zaloguj się, aby złożyć zamówienie
-                        </h1>
+                        <RouterLink to="/login" class="btn btn-lg blue-background">
+                            Rozpocznij
+                        </RouterLink>
                     </div>
 
                 </div>

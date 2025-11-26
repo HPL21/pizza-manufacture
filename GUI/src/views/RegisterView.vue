@@ -27,7 +27,7 @@
                         <input type="password" v-model="passwordConfirm" class="form-control" required />
                     </div>
 
-                    <button type="submit" class="btn btn-danger w-100 btn-lg">
+                    <button type="submit" class="btn btn-lg blue-background w-100 btn-lg">
                         Zarejestruj się
                     </button>
 
