@@ -11,8 +11,27 @@ using API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using API.Interfaces;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext();
+
+    if (!context.HostingEnvironment.IsDevelopment())
+    {
+        configuration.WriteTo.Console(new RenderedCompactJsonFormatter());
+    }
+    else
+    {
+        configuration.WriteTo.Console();
+    }
+});
 
 builder.Services.AddCors(options =>
 {
@@ -150,6 +169,7 @@ app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
 app.MapHealthChecks("/health");

@@ -66,6 +66,25 @@ tasks:
       - echo "Opening tunnel... Connect via localhost:5432. (Ctrl+C to stop)"
       - kubectl port-forward svc/postgres-service 5432:5432
 
+  ops:install:
+    desc: Installs Loki, Promtail and Grafana in 'monitoring' namespace
+    cmds:
+      - helm repo add grafana https://grafana.github.io/helm-charts
+      - helm repo update
+      - helm upgrade --install loki grafana/loki-stack --namespace=monitoring --create-namespace --set grafana.enabled=true
+
+  ops:pass:
+    desc: Reveals the Grafana admin password (base64 encoded)
+    cmds:
+      - kubectl get secret --namespace monitoring loki-grafana -o jsonpath="{.data.admin-password}"
+
+  ops:grafana:
+    desc: Opens tunnel to Grafana dashboard on localhost:3000
+    cmds:
+      - echo "Grafana available at http://localhost:3000 (User admin)"
+      - echo "Run 'task ops:pass' in another terminal to get the password."
+      - kubectl port-forward --namespace monitoring service/loki-grafana 3000:80
+  
   default:
     cmds:
       - task --list
