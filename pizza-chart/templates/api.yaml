@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-api
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: pizza-api
+  template:
+    metadata:
+      labels:
+        app: pizza-api
+    spec:
+      containers:
+        - name: pizza-api
+          image: {{ .Values.api.image }}
+          imagePullPolicy: Never
+          ports:
+            - containerPort: {{ .Values.api.port }}
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=postgres-service;Port=5432;Database={{ .Values.postgres.dbName }};Username=postgres;Password={{ .Values.postgres.password }}"
+            - name: ASPNETCORE_URLS
+              value: "http://+:{{ .Values.api.port }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-api-service
+spec:
+  type: {{ .Values.api.serviceType }}
+  selector:
+    app: pizza-api
+  ports:
+    - protocol: TCP
+      port: {{ .Values.api.port }}
+      targetPort: {{ .Values.api.port }}

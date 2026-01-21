@@ -20,7 +20,6 @@
               <td>{{ pizza.name }}</td>
               <td>{{pizza.ingredients.map(i => i.ingredientName).join(", ")}}</td>
               <td>{{ pizza.price }} zł</td>
-              <td>
               <td class="d-flex align-items-center gap-2">
 
                 <button class="btn btn-danger btn-sm" @click="menu.decreaseQuantity(pizza.id)">−</button>
@@ -30,8 +29,6 @@
                 </span>
 
                 <button class="btn btn-success btn-sm" @click="menu.increaseQuantity(pizza.id)">+</button>
-
-              </td>
 
               </td>
             </tr>

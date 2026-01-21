@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-gui
+spec:
+  replicas: {{ .Values.gui.replicas }}
+  selector:
+    matchLabels:
+      app: pizza-gui
+  template:
+    metadata:
+      labels:
+        app: pizza-gui
+    spec:
+      containers:
+        - name: pizza-gui
+          image: {{ .Values.gui.image }}
+          imagePullPolicy: Never
+          ports:
+            - containerPort: {{ .Values.gui.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-gui-service
+spec:
+  type: {{ .Values.gui.serviceType }}
+  selector:
+    app: pizza-gui
+  ports:
+    - protocol: TCP
+      port: {{ .Values.gui.externalPort }}
+      targetPort: {{ .Values.gui.port }}

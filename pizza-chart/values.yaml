@@ -1,0 +1,20 @@
+namespace: pizza-factory
+
+postgres:
+  image: postgres:16
+  password: "root"
+  dbName: "pizza-manufacture"
+  storageSize: "1Gi"
+
+api:
+  image: pizza-api:v1
+  replicas: 1
+  port: 5003
+  serviceType: LoadBalancer
+
+gui:
+  image: pizza-gui:v1
+  replicas: 1
+  port: 80
+  externalPort: 5173
+  serviceType: LoadBalancer
