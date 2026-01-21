@@ -18,6 +18,13 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: {{ .Values.gui.port }}
+          resources:
+            {{- toYaml .Values.gui.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.gui.livenessProbe.path }}
+              port: {{ .Values.gui.port }}
+            initialDelaySeconds: {{ .Values.gui.livenessProbe.initialDelaySeconds }}
 ---
 apiVersion: v1
 kind: Service
