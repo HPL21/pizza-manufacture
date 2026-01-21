@@ -25,6 +25,47 @@ tasks:
       - docker compose build --no-cache gui
       - docker compose up -d gui
 
+  docker:build:
+    desc: Build production Docker images for API and GUI (tag v1)
+    cmds:
+      - docker build -t pizza-api:v1 -f API/Dockerfile API
+      - docker build -t pizza-gui:v1 -f GUI/Dockerfile.prod GUI
+
+  helm:install:
+    desc: Deploy or upgrade the application using Helm
+    cmds:
+      - helm upgrade --install pizza-app ./pizza-chart
+
+  dev:redeploy:
+    desc: Full cycle - build new images, upgrade Helm release, and restart pods
+    deps: [docker:build]
+    cmds:
+      - task: helm:install
+      - task: k8s:restart
+
+  k8s:restart:
+    desc: Force restart of pods (required to pull changes when overwriting tag v1)
+    cmds:
+      - kubectl rollout restart deployment pizza-api
+      - kubectl rollout restart deployment pizza-gui
+
+  k8s:status:
+    desc: Quick overview of cluster status
+    cmds:
+      - kubectl get pods
+      - kubectl get services
+
+  k8s:logs:
+    desc: Follow live logs from the API pod
+    cmds:
+      - kubectl logs -l app=pizza-api -f --tail=50
+
+  db:tunnel:
+    desc: Open a tunnel to the database on port 5432 (for DBeaver)
+    cmds:
+      - echo "Opening tunnel... Connect via localhost:5432. (Ctrl+C to stop)"
+      - kubectl port-forward svc/postgres-service 5432:5432
+
   default:
     cmds:
       - task --list
