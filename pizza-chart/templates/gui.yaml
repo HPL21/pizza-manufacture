@@ -12,6 +12,7 @@ spec:
       labels:
         app: pizza-gui
     spec:
+      serviceAccountName: pizza-sa
       containers:
         - name: pizza-gui
           image: {{ .Values.gui.image }}
