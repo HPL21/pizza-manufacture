@@ -67,11 +67,11 @@ tasks:
       - kubectl port-forward svc/pizza-app-postgresql 5432:5432 -n pizza-factory
 
   ops:install:
-    desc: Installs Loki, Promtail and Grafana in 'monitoring' namespace
+    desc: Installs Loki stack with Grafana Dashboard Sidecar enabled
     cmds:
       - helm repo add grafana https://grafana.github.io/helm-charts
       - helm repo update
-      - helm upgrade --install loki grafana/loki-stack --namespace=monitoring --create-namespace --set grafana.enabled=true
+      - helm upgrade --install loki grafana/loki-stack --namespace=monitoring --create-namespace --set grafana.enabled=true --set grafana.sidecar.dashboards.enabled=true --set grafana.sidecar.dashboards.label=grafana_dashboard
 
   ops:pass:
     desc: Reveals the Grafana admin password (base64 encoded)
@@ -84,6 +84,12 @@ tasks:
       - echo "Grafana available at http://localhost:3000 (User admin)"
       - echo "Run 'task ops:pass' in another terminal to get the password."
       - kubectl port-forward --namespace monitoring service/loki-grafana 3000:80
+  
+  ops:dash:
+    desc: Deploys the Pizza Dashboard from JSON to Grafana
+    cmds:
+      - kubectl create configmap pizza-dashboard --namespace monitoring --from-file=pizza-dashboard.json=dashboards/pizza-dashboard.json --dry-run=client -o yaml | kubectl label -f - --local grafana_dashboard=1 -o yaml | kubectl apply -f -
+      - echo "Dashboard zaktualizowany! Powinien pojawić się w Grafanie za chwilę."
   
   default:
     cmds:
