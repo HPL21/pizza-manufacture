@@ -64,7 +64,7 @@ tasks:
     desc: Open a tunnel to the database on port 5432
     cmds:
       - echo "Opening tunnel... Connect via localhost:5432."
-      - kubectl port-forward svc/postgres-service 5432:5432 -n pizza-factory
+      - kubectl port-forward svc/pizza-app-postgresql 5432:5432 -n pizza-factory
 
   ops:install:
     desc: Installs Loki, Promtail and Grafana in 'monitoring' namespace

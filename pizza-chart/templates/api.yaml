@@ -20,8 +20,13 @@ spec:
           ports:
             - containerPort: {{ .Values.api.port }}
           env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pizza-app-postgresql
+                  key: postgres-password
             - name: ConnectionStrings__DefaultConnection
-              value: "Host=postgres-service;Port=5432;Database={{ .Values.postgres.dbName }};Username=postgres;Password={{ .Values.postgres.password }}"
+              value: "Host=pizza-app-postgresql;Port=5432;Database={{ .Values.postgresql.auth.database }};Username={{ .Values.postgresql.auth.username }};Password=$(POSTGRES_PASSWORD)"
             - name: ASPNETCORE_URLS
               value: "http://+:{{ .Values.api.port }}"
           resources:

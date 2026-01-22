@@ -1,10 +1,23 @@
 namespace: pizza-factory
 
-postgres:
-  image: postgres:16
-  password: "root"
-  dbName: "pizza-manufacture"
-  storageSize: "1Gi"
+postgresql:
+  enabled: true
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: "16.2.0-debian-11-r1"
+  auth:
+    username: postgres
+    password: "root"
+    database: pizza-manufacture
+    secretKeys:
+      adminPasswordKey: postgres-password
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi
+    service:
+      ports:
+        postgresql: 5432
 
 api:
   image: pizza-api:v1
