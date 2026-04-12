@@ -53,22 +53,22 @@ The project uses ASP.NET Core Identity with JWT-based authentication. After logg
 - Main menu
 ![Main Menu](https://i.postimg.cc/pL9JXT5v/menu-Gowne.png)
 
--Placing order
+- Placing order
 ![Placing order](https://i.postimg.cc/tTz0gDnH/Zamowienie.png)
 
--Order summary
+- Order summary
 ![Order summary](https://i.postimg.cc/gJK904Lb/Podsumowanie.png)
 
--Adding new ingredient
+- Adding new ingredient
 ![Adding new ingredient](https://i.postimg.cc/bJRXvLDB/Nowy-Skladnik.png)
 
--Admin Panel
+- Admin Panel
 ![Admin Panel](https://i.postimg.cc/qRGf7QhP/panel-Administratora.png)
 
--Modifying pizza menu
+- Modifying pizza menu
 ![Modifying pizza menu](https://i.postimg.cc/zBkmfpHr/Zarzadzanie-Menu.png)
 
--Some of the endpoints
+- Some of the endpoints
 ![Endpoints](https://i.postimg.cc/RZ3LVF6p/endpoints.png)
 
 
